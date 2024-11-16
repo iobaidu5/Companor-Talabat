@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="flex flex-col lg:flex-row lg:justify-between mb-6">
           {/* Logo */}
           <div className="mb-4 md:mb-0">
-            <img src="/loogo.png" className="rounded-xl w-44" />
+            <img src="./companor-logo.png" className="rounded-xl w-44" />
           </div>
 
           {/* Links Section */}

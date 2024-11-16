@@ -5,13 +5,13 @@ import React from "react";
 const Header = () => {
   return (
     <nav className="bg-white shadow-md font-PoppinsSemiBold">
-      <div className="container mx-auto px-4 py-5 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         {/* Left Side - Companor Name and Shop travel */}
         <div className="flex items-center space-x-8">
           {/* Companor Name */}
           <Link href="/" className="flex items-center space-x-1">
             {/* <span className="font-semibold text-lg text-gray-800">Companor</span> */}
-            <img src="/loogo.png" className="rounded-xl w-44" />
+            <img src="./companor-logo.png" className="rounded-xl w-24" />
           </Link>
         </div>
 
@@ -43,13 +43,10 @@ const Header = () => {
 
           {/* Other Links */}
           <a href="#" className="font-PoppinsSemiBold hover:text-blue-600">
-            List your property
-          </a>
-          <a href="#" className="font-PoppinsSemiBold hover:text-blue-600">
             Support
           </a>
           <a href="#" className="font-PoppinsSemiBold hover:text-blue-600">
-            Trips
+            Favorite Restaurants
           </a>
 
           {/* Sign In */}

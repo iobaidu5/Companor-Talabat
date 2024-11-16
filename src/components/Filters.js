@@ -2,11 +2,21 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from 'next/router';
 
 export default function Filters() {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(1000);
+  const [filters, setFilters] = useState({
+    category: "",
+    city: "",
+    restaurant: "",
+    priceRange: "",
+    topPicks: false,
+  });
+
+  const router = useRouter();
 
   const popularFilters = [
     "Manhattan",
@@ -95,18 +105,63 @@ export default function Filters() {
     setPriceMin(value);
   };
 
+
+
+  const handleFilterChange = (key, value) => {
+    console.log("(key, value ", key, value);
+  
+    // Update filters
+    const updatedFilters = { ...filters, [key]: value };
+    console.log("------------ updatedFilters", updatedFilters);
+    setFilters(updatedFilters);
+  
+    // Convert filters to a query-friendly format
+    const serializedFilters = Object.entries(updatedFilters)
+      .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+      .join("&");
+  
+    // Add serialized filters to the current query
+    const currentQuery = router.query;
+    const updatedQuery = { ...currentQuery, filter: serializedFilters };
+    console.log("------------ updatedQuery ----", updatedQuery);
+  
+    router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+  
+
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
       {/* Search Input */}
       <div className="mb-6">
-        <h2 className="text-lg font-PoppinsBold text-gray-700 mb-2">Search by property name</h2>
+        {/* <h2 className="text-lg font-PoppinsBold text-gray-700 mb-2">Search by property name</h2>
         <input
           type="text"
           placeholder="e.g. Marriott"
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        /> */}
+
+              {/* Category Filter */}
+      <div>
+        <label className="font-semibold">Category</label>
+        <select
+          onChange={(e) => handleFilterChange("category", e.target.value)}
+          className="w-full mt-2 px-4 py-2 border rounded-lg"
+        >
+          <option value="">All Categories</option>
+          <option value="Picks for you 🔥">Picks for You 🔥</option>
+          <option value="Drinks">Drinks</option>
+          <option value="Desserts">Desserts</option>
+        </select>
+      </div>
       </div>
 
       {/* Popular Filters */}

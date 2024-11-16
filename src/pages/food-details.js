@@ -11,188 +11,188 @@ import axios from "axios";
 import ProductCard from "@/components/ProductCard";
 import AdBanner from "@/components/AdBanner";
 
-const products = [
-  {
-    discount: "41%",
-    image: "/images/1.png",
-    store: "US Store",
-    brand: "Pfaltzgraff",
-    title: "Pfaltzgraff Pistoulet Red 16 Piece Dinnerware Set, Service",
-    price: "PKR 42330",
-    originalPrice: "71310",
-  },
-  {
-    discount: "30%",
-    image: "/images/2.png",
-    store: "US Store",
-    brand: "Corelle",
-    title: "Corelle Livingware 18 Piece Dinnerware Set, Service",
-    price: "PKR 25000",
-    originalPrice: "35714",
-  },
-  {
-    discount: "20%",
-    image: "/images/3.png",
-    store: "US Store",
-    brand: "Gibson",
-    title: "Gibson Home Rockaway 12 Piece Dinnerware Set",
-    price: "PKR 15000",
-    originalPrice: "18750",
-  },
-  {
-    discount: "25%",
-    image: "/images/4.png",
-    store: "US Store",
-    brand: "Lenox",
-    title: "Lenox French Perle 16 Piece Dinnerware Set",
-    price: "PKR 32000",
-    originalPrice: "42667",
-  },
-  {
-    discount: "35%",
-    image: "/images/5.png",
-    store: "US Store",
-    brand: "Noritake",
-    title: "Noritake Colorwave 16 Piece Dinnerware Set",
-    price: "PKR 45000",
-    originalPrice: "69231",
-  },
-  {
-    discount: "15%",
-    image: "/images/6.png",
-    store: "US Store",
-    brand: "Mikasa",
-    title: "Mikasa Italian Countryside 20 Piece Dinnerware Set",
-    price: "PKR 50000",
-    originalPrice: "58824",
-  },
-  {
-    discount: "22%",
-    image: "/images/7.png",
-    store: "US Store",
-    brand: "Royal Doulton",
-    title: "Royal Doulton Pacific 16 Piece Dinnerware Set",
-    price: "PKR 33000",
-    originalPrice: "42308",
-  },
-  {
-    discount: "28%",
-    image: "/images/8.png",
-    store: "US Store",
-    brand: "Villeroy & Boch",
-    title: "Villeroy & Boch NewWave 16 Piece Dinnerware Set",
-    price: "PKR 42000",
-    originalPrice: "58333",
-  },
-  {
-    discount: "18%",
-    image: "/images/9.png",
-    store: "US Store",
-    brand: "Pfaltzgraff",
-    title: "Pfaltzgraff Villa della Luna 16 Piece Dinnerware Set",
-    price: "PKR 37000",
-    originalPrice: "45122",
-  },
-  {
-    discount: "45%",
-    image: "/images/10.png",
-    store: "US Store",
-    brand: "Corelle",
-    title: "Corelle Impressions 18 Piece Dinnerware Set",
-    price: "PKR 30000",
-    originalPrice: "54545",
-  },
-  {
-    discount: "12%",
-    image: "/images/1.png",
-    store: "US Store",
-    brand: "Gibson",
-    title: "Gibson Elite Soho Lounge 16 Piece Dinnerware Set",
-    price: "PKR 24000",
-    originalPrice: "27273",
-  },
-  {
-    discount: "38%",
-    image: "/images/2.png",
-    store: "US Store",
-    brand: "Lenox",
-    title: "Lenox Opal Innocence Carved 16 Piece Dinnerware Set",
-    price: "PKR 28000",
-    originalPrice: "45161",
-  },
-  {
-    discount: "27%",
-    image: "/images/3.png",
-    store: "US Store",
-    brand: "Noritake",
-    title: "Noritake Crestwood Platinum 16 Piece Dinnerware Set",
-    price: "PKR 43000",
-    originalPrice: "58904",
-  },
-  {
-    discount: "32%",
-    image: "/images/4.png",
-    store: "US Store",
-    brand: "Mikasa",
-    title: "Mikasa Delray 16 Piece Dinnerware Set",
-    price: "PKR 31000",
-    originalPrice: "45588",
-  },
-  {
-    discount: "19%",
-    image: "/images/5.png",
-    store: "US Store",
-    brand: "Royal Doulton",
-    title: "Royal Doulton Gordon Ramsay Maze 16 Piece Dinnerware Set",
-    price: "PKR 46000",
-    originalPrice: "56790",
-  },
-  {
-    discount: "24%",
-    image: "/images/6.png",
-    store: "US Store",
-    brand: "Villeroy & Boch",
-    title: "Villeroy & Boch Artesano 16 Piece Dinnerware Set",
-    price: "PKR 39000",
-    originalPrice: "51316",
-  },
-  {
-    discount: "36%",
-    image: "/images/7.png",
-    store: "US Store",
-    brand: "Pfaltzgraff",
-    title: "Pfaltzgraff Heritage 16 Piece Dinnerware Set",
-    price: "PKR 27000",
-    originalPrice: "42188",
-  },
-  {
-    discount: "29%",
-    image: "/images/8.png",
-    store: "US Store",
-    brand: "Corelle",
-    title: "Corelle Square 18 Piece Dinnerware Set",
-    price: "PKR 26000",
-    originalPrice: "36620",
-  },
-  {
-    discount: "40%",
-    image: "/images/9.png",
-    store: "US Store",
-    brand: "Gibson",
-    title: "Gibson Elite Tequesta 16 Piece Dinnerware Set",
-    price: "PKR 35000",
-    originalPrice: "58333",
-  },
-  {
-    discount: "34%",
-    image: "/images/10.png",
-    store: "US Store",
-    brand: "Lenox",
-    title: "Lenox Butterfly Meadow 16 Piece Dinnerware Set",
-    price: "PKR 31000",
-    originalPrice: "46970",
-  },
-];
+// const products = [
+//   {
+//     discount: "41%",
+//     image: "/images/1.png",
+//     store: "US Store",
+//     brand: "Pfaltzgraff",
+//     title: "Pfaltzgraff Pistoulet Red 16 Piece Dinnerware Set, Service",
+//     price: "PKR 42330",
+//     originalPrice: "71310",
+//   },
+//   {
+//     discount: "30%",
+//     image: "/images/2.png",
+//     store: "US Store",
+//     brand: "Corelle",
+//     title: "Corelle Livingware 18 Piece Dinnerware Set, Service",
+//     price: "PKR 25000",
+//     originalPrice: "35714",
+//   },
+//   {
+//     discount: "20%",
+//     image: "/images/3.png",
+//     store: "US Store",
+//     brand: "Gibson",
+//     title: "Gibson Home Rockaway 12 Piece Dinnerware Set",
+//     price: "PKR 15000",
+//     originalPrice: "18750",
+//   },
+//   {
+//     discount: "25%",
+//     image: "/images/4.png",
+//     store: "US Store",
+//     brand: "Lenox",
+//     title: "Lenox French Perle 16 Piece Dinnerware Set",
+//     price: "PKR 32000",
+//     originalPrice: "42667",
+//   },
+//   {
+//     discount: "35%",
+//     image: "/images/5.png",
+//     store: "US Store",
+//     brand: "Noritake",
+//     title: "Noritake Colorwave 16 Piece Dinnerware Set",
+//     price: "PKR 45000",
+//     originalPrice: "69231",
+//   },
+//   {
+//     discount: "15%",
+//     image: "/images/6.png",
+//     store: "US Store",
+//     brand: "Mikasa",
+//     title: "Mikasa Italian Countryside 20 Piece Dinnerware Set",
+//     price: "PKR 50000",
+//     originalPrice: "58824",
+//   },
+//   {
+//     discount: "22%",
+//     image: "/images/7.png",
+//     store: "US Store",
+//     brand: "Royal Doulton",
+//     title: "Royal Doulton Pacific 16 Piece Dinnerware Set",
+//     price: "PKR 33000",
+//     originalPrice: "42308",
+//   },
+//   {
+//     discount: "28%",
+//     image: "/images/8.png",
+//     store: "US Store",
+//     brand: "Villeroy & Boch",
+//     title: "Villeroy & Boch NewWave 16 Piece Dinnerware Set",
+//     price: "PKR 42000",
+//     originalPrice: "58333",
+//   },
+//   {
+//     discount: "18%",
+//     image: "/images/9.png",
+//     store: "US Store",
+//     brand: "Pfaltzgraff",
+//     title: "Pfaltzgraff Villa della Luna 16 Piece Dinnerware Set",
+//     price: "PKR 37000",
+//     originalPrice: "45122",
+//   },
+//   {
+//     discount: "45%",
+//     image: "/images/10.png",
+//     store: "US Store",
+//     brand: "Corelle",
+//     title: "Corelle Impressions 18 Piece Dinnerware Set",
+//     price: "PKR 30000",
+//     originalPrice: "54545",
+//   },
+//   {
+//     discount: "12%",
+//     image: "/images/1.png",
+//     store: "US Store",
+//     brand: "Gibson",
+//     title: "Gibson Elite Soho Lounge 16 Piece Dinnerware Set",
+//     price: "PKR 24000",
+//     originalPrice: "27273",
+//   },
+//   {
+//     discount: "38%",
+//     image: "/images/2.png",
+//     store: "US Store",
+//     brand: "Lenox",
+//     title: "Lenox Opal Innocence Carved 16 Piece Dinnerware Set",
+//     price: "PKR 28000",
+//     originalPrice: "45161",
+//   },
+//   {
+//     discount: "27%",
+//     image: "/images/3.png",
+//     store: "US Store",
+//     brand: "Noritake",
+//     title: "Noritake Crestwood Platinum 16 Piece Dinnerware Set",
+//     price: "PKR 43000",
+//     originalPrice: "58904",
+//   },
+//   {
+//     discount: "32%",
+//     image: "/images/4.png",
+//     store: "US Store",
+//     brand: "Mikasa",
+//     title: "Mikasa Delray 16 Piece Dinnerware Set",
+//     price: "PKR 31000",
+//     originalPrice: "45588",
+//   },
+//   {
+//     discount: "19%",
+//     image: "/images/5.png",
+//     store: "US Store",
+//     brand: "Royal Doulton",
+//     title: "Royal Doulton Gordon Ramsay Maze 16 Piece Dinnerware Set",
+//     price: "PKR 46000",
+//     originalPrice: "56790",
+//   },
+//   {
+//     discount: "24%",
+//     image: "/images/6.png",
+//     store: "US Store",
+//     brand: "Villeroy & Boch",
+//     title: "Villeroy & Boch Artesano 16 Piece Dinnerware Set",
+//     price: "PKR 39000",
+//     originalPrice: "51316",
+//   },
+//   {
+//     discount: "36%",
+//     image: "/images/7.png",
+//     store: "US Store",
+//     brand: "Pfaltzgraff",
+//     title: "Pfaltzgraff Heritage 16 Piece Dinnerware Set",
+//     price: "PKR 27000",
+//     originalPrice: "42188",
+//   },
+//   {
+//     discount: "29%",
+//     image: "/images/8.png",
+//     store: "US Store",
+//     brand: "Corelle",
+//     title: "Corelle Square 18 Piece Dinnerware Set",
+//     price: "PKR 26000",
+//     originalPrice: "36620",
+//   },
+//   {
+//     discount: "40%",
+//     image: "/images/9.png",
+//     store: "US Store",
+//     brand: "Gibson",
+//     title: "Gibson Elite Tequesta 16 Piece Dinnerware Set",
+//     price: "PKR 35000",
+//     originalPrice: "58333",
+//   },
+//   {
+//     discount: "34%",
+//     image: "/images/10.png",
+//     store: "US Store",
+//     brand: "Lenox",
+//     title: "Lenox Butterfly Meadow 16 Piece Dinnerware Set",
+//     price: "PKR 31000",
+//     originalPrice: "46970",
+//   },
+// ];
 
 
 const FoodDetails = () => {
@@ -201,9 +201,9 @@ const FoodDetails = () => {
   const [direction, setDirection] = useState({});
 
   const router = useRouter();
-  const { cityId, restaurantId, category, foodByCity } = router.query;
+  const { cityId, restaurantId, category, foodByCity, searchedFood, filter } = router.query;
 
-  console.log("router.query -> ", router.query);
+  console.log("router.query filter -> ", filter);
 
   const [foodItems, setFoodItems] = useState([]);
 
@@ -249,8 +249,6 @@ const FoodDetails = () => {
         .then((res) => res.json())
         .then((data) => setFoodItems(data.foodItems));
 
-      console.log("res img -> ", response);
-
       // const response = await axios.get('/api/scrape-image', {
       //   params: { link, itemName },
       // });
@@ -287,6 +285,93 @@ const FoodDetails = () => {
       fetchFoodItems();
     }
   }, [category]);
+
+
+
+
+  useEffect(() => {
+    if (searchedFood) {
+      const fetchFoodItems = async () => {
+        try {
+
+          const response = await axios.get('/api/search-food-items', {
+            params: {
+              query: searchedFood,
+              page: currentPage, limit: itemsPerPage
+            },
+          });
+
+          setFoodItems(response.data.foodItems);
+          setTotalPages(response.data.totalPages);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching food items:', error);
+          setLoading(false);
+        }
+      };
+
+      fetchFoodItems();
+    }
+  }, [searchedFood]);
+
+
+  useEffect(() => {
+    if (filter) {
+      const handleFilterChange = () => {
+
+        const filteredData = foodItems.filter((item) => {
+          let isMatch = true;
+
+          if (filter.category && item.category !== filter.category) {
+            isMatch = false;
+          }
+
+          if (
+            filter.city &&
+            item.city &&
+            item.city.$oid !== filter.city
+          ) {
+            isMatch = false;
+          }
+
+          if (
+            filter.restaurant &&
+            !item.restaurants.some(
+              (restaurant) =>
+                restaurant.restaurantId.$oid === filter.restaurant
+            )
+          ) {
+            isMatch = false;
+          }
+
+          if (filter.priceRange) {
+            const [min, max] = filter.priceRange.split("-").map(Number);
+            const price = parseFloat(
+              item.restaurants[0]?.price || "0"
+            ); /* Assuming first restaurant's price */
+            if (price < min || price > max) {
+              isMatch = false;
+            }
+          }
+
+          if (filter.topPicks && item.category !== "Picks for you 🔥") {
+            isMatch = false;
+          }
+
+          return isMatch;
+        });
+
+        setFoodItems(filteredData);
+      };
+
+      handleFilterChange(0)
+    }
+  }, [filter]);
+
+
+
+
+
 
   useEffect(() => {
     const fetchFoodItems = async () => {
@@ -376,7 +461,7 @@ const FoodDetails = () => {
                 </button>
               </div>
             </div> */}
-            <div className="bg-black">
+            <div className="bg-gray-200">
               <AdBanner
                 dataAdSlot="3228536862"
                 dataAdFormat="auto"
@@ -507,7 +592,7 @@ const FoodDetails = () => {
               )}
             </div>
           </div>
-          <div className="w-[10%] bg-black relative">
+          <div className="w-[10%] bg-gray-200 relative">
             <AdBanner
               dataAdSlot="2953204693"
               dataAdFormat="auto"
