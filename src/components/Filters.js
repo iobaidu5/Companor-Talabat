@@ -198,7 +198,7 @@ export default function Filters() {
       </div>
 
       {/* Popular Filters */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="font-PoppinsBold text-gray-700 text-[1rem] mb-3">Payment Type</h3>
         <div className="space-y-2">
           {["Reserve now, pay later", "Reserve without credit card"].map(
@@ -213,7 +213,7 @@ export default function Filters() {
             )
           )}
         </div>
-      </div>
+      </div> */}
       <div className="mb-6">
         <h3 className="font-PoppinsBold text-gray-700 text-[1rem] mb-3">Star Rating</h3>
         <div className="flex flex-wrap">
@@ -241,7 +241,7 @@ export default function Filters() {
           })}
         </div>
       </div>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="font-PoppinsBold text-gray-700 text-[1rem] mb-3">Accessibility</h3>
         <div className="space-y-2">
           {accessibilityFeatures.map((filter) => (
@@ -254,9 +254,9 @@ export default function Filters() {
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="font-PoppinsBold text-gray-700 text-[1rem] mb-3">Traveler experience</h3>
         <div className="space-y-2">
           {travelerExperience.map((filter) => (
@@ -269,7 +269,7 @@ export default function Filters() {
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="mb-6">
         <h3 className="font-PoppinsBold text-gray-700 text-[1rem] mb-3">Meal plans available</h3>
@@ -286,7 +286,7 @@ export default function Filters() {
         </div>
       </div>
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="font-PoppinsBold text-gray-700 text-[1rem] mb-3">One Key benefits and discounts</h3>
         <div className="space-y-2">
           {oneKeyBenefits.map((filter) => (
@@ -299,7 +299,7 @@ export default function Filters() {
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -21,7 +21,7 @@ const AdBanner = ({
     <ins
       className="adsbygoogle"
       style={{ display: "block" }}
-      data-ad-client="ca-pub-123456789"
+      data-ad-client={`ca-${process.env.NEXT_PUBLIC_PUBLISHER_ID}`}
       data-ad-slot={dataAdSlot}
       data-ad-format={dataAdFormat}
       data-full-width-responsive={dataFullWidthResponsive.toString()}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import axios from "axios";
 import { useRouter } from "next/router";
+import AdBanner from "./AdBanner";
 
 const favoriteStays = [
   { name: "Fish Fries", image: "/1.png" },
@@ -113,6 +114,13 @@ const FavoriteStaySlider = () => {
           </div>
         ))}
       </Slider>
+      <div className="bg-black">
+      <AdBanner
+        dataAdSlot="1630442794"
+        dataAdFormat="auto"
+        dataFullWidthResponsive={true}
+      />
+      </div>
     </section>
   );
 };

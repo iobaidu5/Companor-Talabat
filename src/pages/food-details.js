@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 
 import axios from "axios";
 import ProductCard from "@/components/ProductCard";
+import AdBanner from "@/components/AdBanner";
 
 const products = [
   {
@@ -375,7 +376,14 @@ const FoodDetails = () => {
                 </button>
               </div>
             </div> */}
-            <img src="/addds.png" className="w-full mb-4 sticky top-0 z-20" />
+            <div className="bg-black">
+              <AdBanner
+                dataAdSlot="3228536862"
+                dataAdFormat="auto"
+                dataFullWidthResponsive={true}
+              />
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
               {foodItems.map((product, index) => (
                 <ProductCard key={index} product={product} />
@@ -477,11 +485,10 @@ const FoodDetails = () => {
                     key={page}
                     onClick={() => handlePageChange(page)}
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors 
-                ${
-                  page === currentPage
-                    ? "bg-blue-500 text-white cursor-default"
-                    : "bg-gray-200 text-gray-700 hover:bg-blue-100"
-                }`}
+                ${page === currentPage
+                        ? "bg-blue-500 text-white cursor-default"
+                        : "bg-gray-200 text-gray-700 hover:bg-blue-100"
+                      }`}
                     disabled={page === currentPage}
                   >
                     {page}
@@ -500,9 +507,13 @@ const FoodDetails = () => {
               )}
             </div>
           </div>
-          <div className="w-[10%] relative">
-            <img src="/ad1.png" />
-            <img src="/ad2.png" className="mt-12 sticky top-4" />
+          <div className="w-[10%] bg-black relative">
+            <AdBanner
+              dataAdSlot="2953204693"
+              dataAdFormat="auto"
+              dataFullWidthResponsive={true}
+            />
+            {/* <img src="/ad2.png" className="mt-12 sticky top-4" /> */}
           </div>
         </div>
       </main>
