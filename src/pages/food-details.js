@@ -11,189 +11,63 @@ import axios from "axios";
 import ProductCard from "@/components/ProductCard";
 import AdBanner from "@/components/AdBanner";
 
-// const products = [
-//   {
-//     discount: "41%",
-//     image: "/images/1.png",
-//     store: "US Store",
-//     brand: "Pfaltzgraff",
-//     title: "Pfaltzgraff Pistoulet Red 16 Piece Dinnerware Set, Service",
-//     price: "PKR 42330",
-//     originalPrice: "71310",
-//   },
-//   {
-//     discount: "30%",
-//     image: "/images/2.png",
-//     store: "US Store",
-//     brand: "Corelle",
-//     title: "Corelle Livingware 18 Piece Dinnerware Set, Service",
-//     price: "PKR 25000",
-//     originalPrice: "35714",
-//   },
-//   {
-//     discount: "20%",
-//     image: "/images/3.png",
-//     store: "US Store",
-//     brand: "Gibson",
-//     title: "Gibson Home Rockaway 12 Piece Dinnerware Set",
-//     price: "PKR 15000",
-//     originalPrice: "18750",
-//   },
-//   {
-//     discount: "25%",
-//     image: "/images/4.png",
-//     store: "US Store",
-//     brand: "Lenox",
-//     title: "Lenox French Perle 16 Piece Dinnerware Set",
-//     price: "PKR 32000",
-//     originalPrice: "42667",
-//   },
-//   {
-//     discount: "35%",
-//     image: "/images/5.png",
-//     store: "US Store",
-//     brand: "Noritake",
-//     title: "Noritake Colorwave 16 Piece Dinnerware Set",
-//     price: "PKR 45000",
-//     originalPrice: "69231",
-//   },
-//   {
-//     discount: "15%",
-//     image: "/images/6.png",
-//     store: "US Store",
-//     brand: "Mikasa",
-//     title: "Mikasa Italian Countryside 20 Piece Dinnerware Set",
-//     price: "PKR 50000",
-//     originalPrice: "58824",
-//   },
-//   {
-//     discount: "22%",
-//     image: "/images/7.png",
-//     store: "US Store",
-//     brand: "Royal Doulton",
-//     title: "Royal Doulton Pacific 16 Piece Dinnerware Set",
-//     price: "PKR 33000",
-//     originalPrice: "42308",
-//   },
-//   {
-//     discount: "28%",
-//     image: "/images/8.png",
-//     store: "US Store",
-//     brand: "Villeroy & Boch",
-//     title: "Villeroy & Boch NewWave 16 Piece Dinnerware Set",
-//     price: "PKR 42000",
-//     originalPrice: "58333",
-//   },
-//   {
-//     discount: "18%",
-//     image: "/images/9.png",
-//     store: "US Store",
-//     brand: "Pfaltzgraff",
-//     title: "Pfaltzgraff Villa della Luna 16 Piece Dinnerware Set",
-//     price: "PKR 37000",
-//     originalPrice: "45122",
-//   },
-//   {
-//     discount: "45%",
-//     image: "/images/10.png",
-//     store: "US Store",
-//     brand: "Corelle",
-//     title: "Corelle Impressions 18 Piece Dinnerware Set",
-//     price: "PKR 30000",
-//     originalPrice: "54545",
-//   },
-//   {
-//     discount: "12%",
-//     image: "/images/1.png",
-//     store: "US Store",
-//     brand: "Gibson",
-//     title: "Gibson Elite Soho Lounge 16 Piece Dinnerware Set",
-//     price: "PKR 24000",
-//     originalPrice: "27273",
-//   },
-//   {
-//     discount: "38%",
-//     image: "/images/2.png",
-//     store: "US Store",
-//     brand: "Lenox",
-//     title: "Lenox Opal Innocence Carved 16 Piece Dinnerware Set",
-//     price: "PKR 28000",
-//     originalPrice: "45161",
-//   },
-//   {
-//     discount: "27%",
-//     image: "/images/3.png",
-//     store: "US Store",
-//     brand: "Noritake",
-//     title: "Noritake Crestwood Platinum 16 Piece Dinnerware Set",
-//     price: "PKR 43000",
-//     originalPrice: "58904",
-//   },
-//   {
-//     discount: "32%",
-//     image: "/images/4.png",
-//     store: "US Store",
-//     brand: "Mikasa",
-//     title: "Mikasa Delray 16 Piece Dinnerware Set",
-//     price: "PKR 31000",
-//     originalPrice: "45588",
-//   },
-//   {
-//     discount: "19%",
-//     image: "/images/5.png",
-//     store: "US Store",
-//     brand: "Royal Doulton",
-//     title: "Royal Doulton Gordon Ramsay Maze 16 Piece Dinnerware Set",
-//     price: "PKR 46000",
-//     originalPrice: "56790",
-//   },
-//   {
-//     discount: "24%",
-//     image: "/images/6.png",
-//     store: "US Store",
-//     brand: "Villeroy & Boch",
-//     title: "Villeroy & Boch Artesano 16 Piece Dinnerware Set",
-//     price: "PKR 39000",
-//     originalPrice: "51316",
-//   },
-//   {
-//     discount: "36%",
-//     image: "/images/7.png",
-//     store: "US Store",
-//     brand: "Pfaltzgraff",
-//     title: "Pfaltzgraff Heritage 16 Piece Dinnerware Set",
-//     price: "PKR 27000",
-//     originalPrice: "42188",
-//   },
-//   {
-//     discount: "29%",
-//     image: "/images/8.png",
-//     store: "US Store",
-//     brand: "Corelle",
-//     title: "Corelle Square 18 Piece Dinnerware Set",
-//     price: "PKR 26000",
-//     originalPrice: "36620",
-//   },
-//   {
-//     discount: "40%",
-//     image: "/images/9.png",
-//     store: "US Store",
-//     brand: "Gibson",
-//     title: "Gibson Elite Tequesta 16 Piece Dinnerware Set",
-//     price: "PKR 35000",
-//     originalPrice: "58333",
-//   },
-//   {
-//     discount: "34%",
-//     image: "/images/10.png",
-//     store: "US Store",
-//     brand: "Lenox",
-//     title: "Lenox Butterfly Meadow 16 Piece Dinnerware Set",
-//     price: "PKR 31000",
-//     originalPrice: "46970",
-//   },
-// ];
-
+export const products = [
+  {
+    id: 1,
+    name: "Margherita Pizza",
+    category: "Italian",
+    ingredients: ["Mozzarella", "Tomato Sauce", "Basil"],
+    location: "Naples, Italy",
+    description:
+      "A classic Italian pizza made with a simple and delicious combination of mozzarella, fresh tomato sauce, and fragrant basil leaves.",
+    image: "/images/1.png",
+    price: "12",
+  },
+  {
+    id: 2,
+    name: "Sushi Platter",
+    category: "Japanese",
+    ingredients: ["Rice", "Raw Fish", "Seaweed", "Vegetables"],
+    location: "Tokyo, Japan",
+    description:
+      "An assortment of fresh sushi rolls made with premium-quality fish, perfectly seasoned rice, and a variety of fresh vegetables.",
+    image: "/images/2.png",
+    price: "25",
+  },
+  {
+    id: 3,
+    name: "Tacos Al Pastor",
+    category: "Mexican",
+    ingredients: ["Marinated Pork", "Pineapple", "Corn Tortilla"],
+    location: "Mexico City, Mexico",
+    description:
+      "A delicious and flavorful Mexican dish made with marinated pork, pineapple, and served on soft corn tortillas.",
+    image: "/images/3.png",
+    price: "8",
+  },
+  {
+    id: 4,
+    name: "Butter Chicken",
+    category: "Indian",
+    ingredients: ["Chicken", "Butter", "Tomato Gravy", "Spices"],
+    location: "Delhi, India",
+    description:
+      "A rich and creamy Indian curry made with tender chicken cooked in a flavorful tomato-based gravy with aromatic spices.",
+    image: "/images/4.png",
+    price: "15",
+  },
+  {
+    id: 5,
+    name: "French Croissant",
+    category: "French",
+    ingredients: ["Flour", "Butter", "Yeast"],
+    location: "Paris, France",
+    description:
+      "A buttery and flaky French pastry, perfectly golden and deliciously light, ideal for breakfast or a snack.",
+    image: "/images/5.png",
+    price: "5",
+  },
+];
 
 const FoodDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState({});
@@ -201,7 +75,8 @@ const FoodDetails = () => {
   const [direction, setDirection] = useState({});
 
   const router = useRouter();
-  const { cityId, restaurantId, category, foodByCity, searchedFood, filter } = router.query;
+  const { cityId, restaurantId, category, foodByCity, searchedFood, filter } =
+    router.query;
 
   console.log("router.query filter -> ", filter);
 
@@ -254,7 +129,6 @@ const FoodDetails = () => {
       // });
       // return response.data.imageSrc;
     } catch (error) {
-      console.error("Error fetching image:", error);
       return "/assets/images/img-placeholder.svg";
     }
   };
@@ -286,18 +160,15 @@ const FoodDetails = () => {
     }
   }, [category]);
 
-
-
-
   useEffect(() => {
     if (searchedFood) {
       const fetchFoodItems = async () => {
         try {
-
-          const response = await axios.get('/api/search-food-items', {
+          const response = await axios.get("/api/search-food-items", {
             params: {
               query: searchedFood,
-              page: currentPage, limit: itemsPerPage
+              page: currentPage,
+              limit: itemsPerPage,
             },
           });
 
@@ -305,7 +176,7 @@ const FoodDetails = () => {
           setTotalPages(response.data.totalPages);
           setLoading(false);
         } catch (error) {
-          console.error('Error fetching food items:', error);
+          console.error("Error fetching food items:", error);
           setLoading(false);
         }
       };
@@ -314,11 +185,9 @@ const FoodDetails = () => {
     }
   }, [searchedFood]);
 
-
   useEffect(() => {
     if (filter) {
       const handleFilterChange = () => {
-
         const filteredData = foodItems.filter((item) => {
           let isMatch = true;
 
@@ -326,19 +195,14 @@ const FoodDetails = () => {
             isMatch = false;
           }
 
-          if (
-            filter.city &&
-            item.city &&
-            item.city.$oid !== filter.city
-          ) {
+          if (filter.city && item.city && item.city.$oid !== filter.city) {
             isMatch = false;
           }
 
           if (
             filter.restaurant &&
             !item.restaurants.some(
-              (restaurant) =>
-                restaurant.restaurantId.$oid === filter.restaurant
+              (restaurant) => restaurant.restaurantId.$oid === filter.restaurant
             )
           ) {
             isMatch = false;
@@ -364,14 +228,9 @@ const FoodDetails = () => {
         setFoodItems(filteredData);
       };
 
-      handleFilterChange(0)
+      handleFilterChange(0);
     }
   }, [filter]);
-
-
-
-
-
 
   useEffect(() => {
     const fetchFoodItems = async () => {
@@ -469,9 +328,9 @@ const FoodDetails = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-              {foodItems.map((product, index) => (
-                <ProductCard key={index} product={product} />
+            <div className="grid grid-cols-1 gap-4">
+              {products.map((food, index) => (
+                <ProductCard key={index} food={food} />
               ))}
             </div>
             {/* <div>
@@ -570,10 +429,11 @@ const FoodDetails = () => {
                     key={page}
                     onClick={() => handlePageChange(page)}
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors 
-                ${page === currentPage
-                        ? "bg-blue-500 text-white cursor-default"
-                        : "bg-gray-200 text-gray-700 hover:bg-blue-100"
-                      }`}
+                ${
+                  page === currentPage
+                    ? "bg-blue-500 text-white cursor-default"
+                    : "bg-gray-200 text-gray-700 hover:bg-blue-100"
+                }`}
                     disabled={page === currentPage}
                   >
                     {page}

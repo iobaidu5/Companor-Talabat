@@ -1,56 +1,51 @@
-// components/ProductCard.js
-
 import React from "react";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ food }) => {
   return (
-    <div className="bg-white border border-gray-200 p-4 relative">
-      {/* Discount Badge */}
-      <div className="absolute top-6 left-6 bg-yellow-400 text-black font-PoppinsBold px-2 py-1 rounded-md text-sm">
-        {product.discount || product.restaurants[0].price} Off
+    <div className="border border-gray-200 rounded-lg shadow-md flex overflow-hidden w-full">
+      {/* Image Section */}
+      <div className="h-56 w-2/5">
+        <img
+          src={food.image}
+          alt={food.name}
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      {/* Product Image */}
-      <img
-        src={product.image != "/assets/images/img-placeholder.svg" ? product.image : `/images/${Math.floor(Math.random() * 10) + 1}.png`}
-        alt={product.itemName}
-        className="w-full h-56 object-cover mb-4"
-      />
-
-      {/* Store and Brand Info */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center">
-          <span className="mr-2">🇰🇼</span> 
-          <span className="text-gray-500 text-sm mr-1">{product.restaurants[0].source}</span>
+      {/* Content Section */}
+      <div className="w-3/5 p-4 flex flex-col justify-between">
+        {/* Title and Category */}
+        <div className="flex justify-between items-start">
+          <h3 className="text-lg font-PoppinsSemiBold">{food.name}</h3>
+          <p className="text-gray-500 text-sm">{food.category}</p>
         </div>
-        <span className="text-black font-PoppinsBold">{product.category}</span>
-      </div>
 
-      {/* Product Title */}
-      <h2 className="text-gray-900 text-[1rem] mb-2 leading-tight truncate">
-        {product.itemName}
-      </h2>
+        {/* Location */}
+        <p className="text-gray-600 text-sm flex items-center mt-1">
+          <span className="mr-1">📍</span>
+          {food.location}
+        </p>
 
-      <div className="flex justify-between w-full mt-3">
+        {/* Description */}
+        <p className="text-gray-700 text-sm mt-2 line-clamp-2">
+          {food.description}
+        </p>
+
         {/* Price */}
-        <div className="flex items-center space-x-2">
-          <span className="text-black font-PoppinsBold text-lg">{product.restaurants[0].price}</span>
-          <span className="line-through text-sm text-red-500">
-          {product.restaurants[0].price}
-          </span>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            {/* Score Badge */}
+            <div className="bg-green-600 text-white font-semibold text-sm rounded-md px-3 py-1">
+              {(4).toFixed(1)}
+            </div>
+            {/* Rating Details */}
+            <div>
+              <p className="text-gray-900 text-sm">Very Good</p>
+              <p className="text-gray-500 text-sm">{5} reviews</p>
+            </div>
+          </div>
+          <p className="text-primary font-PoppinsSemiBold mt-4">From ${food.price}</p>
         </div>
-
-        {/* Cart Icon */}
-        {/* <button className="mt-2 bg-yellow-500 p-2 rounded-xl flex items-center justify-center"> */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-8 h-8 text-yellow-500"
-        >
-          <path d="M3 3h2l3.6 7.59-1.35 2.44A1 1 0 008 15h12v-2H8.42l1.1-2H18a1 1 0 00.92-.63l3.25-7.25A1 1 0 0021.25 2H5l-.94-2H1v2h2l3.6 7.59L5.24 12H1v2h4a1 1 0 00.9-.55L7.45 9H3z" />
-        </svg>
-        {/* </button> */}
       </div>
     </div>
   );
