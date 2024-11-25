@@ -1,94 +1,87 @@
 import { useState } from "react";
 
-const faqData = [
-  {
-    question:
-      "Does Boulders Resort & Spa Scottsdale, Curio Collection by Hilton have a pool?",
-    answer: "Yes, this property has 3 outdoor pools.",
-  },
-  {
-    question:
-      "Is Boulders Resort & Spa Scottsdale, Curio Collection by Hilton pet-friendly?",
-    answer: "No, only service animals are welcome at the property.",
-  },
-  {
-    question:
-      "How much is parking at Boulders Resort & Spa Scottsdale, Curio Collection by Hilton?",
-    answer: "Valet parking is available for USD 25 per day.",
-  },
-  {
-    question:
-      "What time is check-in at Boulders Resort & Spa Scottsdale, Curio Collection by Hilton?",
-    answer: "Check-in start time: 4 PM; Check-in end time: 2:00 AM.",
-  },
-  {
-    question:
-      "What time is check-out at Boulders Resort & Spa Scottsdale, Curio Collection by Hilton?",
-    answer: "Check-out is at noon.",
-  },
-  {
-    question:
-      "Where is Boulders Resort & Spa Scottsdale, Curio Collection by Hilton located?",
-    answer:
-      "Located in Pinnacle Peak, this luxury hotel is 0.4 mi (0.6 km) from Boulders Golf Club and within 12 mi (20 km) of Pinnacle Peak Park and Cave Buttes Recreation Area. Desert Ridge Marketplace and Musical Instrument Museum are also within 12 mi (20 km).",
-  },
-];
-
 const FAQs = () => {
-  const [openIndex, setOpenIndex] = useState(null); // Track the currently open FAQ index
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  const toggle = (index) => {
-    setOpenIndex(openIndex === index ? null : index); // Open clicked FAQ or close if already open
+  const toggleFAQ = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
+  const faqs = [
+    {
+      question: "What are your restaurant's opening hours?",
+      answer:
+        "Our restaurant is open daily from 10:00 AM to 10:00 PM. On weekends, we extend our hours until 11:00 PM.",
+    },
+    {
+      question: "Do you offer vegetarian and vegan options?",
+      answer:
+        "Yes, we offer a variety of vegetarian and vegan options. Our menu is designed to accommodate different dietary preferences.",
+    },
+    {
+      question: "Is your restaurant wheelchair accessible?",
+      answer:
+        "Absolutely! We have a wheelchair-accessible entrance, seating, and restrooms to ensure everyone's comfort.",
+    },
+    {
+      question: "Do you accept online reservations?",
+      answer:
+        "Yes, you can make reservations online through our website or by calling us directly.",
+    },
+    {
+      question: "Do you provide parking facilities?",
+      answer:
+        "Yes, we offer free parking for our guests, including designated spots for disabled parking.",
+    },
+  ];
+
   return (
-    <div className="space-y-4">
-      {faqData.map((faq, index) => (
-        <div className="border-b" key={index}>
-          <button
-            onClick={() => toggle(index)}
-            className="flex justify-between w-full py-4 text-left text-lg font-semibold text-gray-900 focus:outline-none"
+    <div className="flex my-8">
+      <h1 className="text-2xl font-bold text-gray-900 mb-6 w-1/5">
+        Frequently Asked Questions
+      </h1>
+      <div className="space-y-4 w-4/5">
+        {faqs.map((faq, index) => (
+          <div
+            key={index}
+            className="border border-gray-200 rounded-lg shadow-md"
           >
-            <span className="font-PoppinsSemiBold">{faq.question}</span>
-            <span>
-              {openIndex === index ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+            {/* Question */}
+            <button
+              onClick={() => toggleFAQ(index)}
+              className="w-full flex justify-between items-center p-4 text-left bg-gray-50 hover:bg-gray-100 focus:outline-none"
+            >
+              <span className="text-lg font-PoppinsBold text-gray-800">
+                {faq.question}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`w-6 h-6 text-gray-800 transition-transform duration-300 ${
+                  activeIndex === index ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              )}
-            </span>
-          </button>
-          {openIndex === index && (
-            <p className="pl-4 pb-4 text-gray-700">{faq.answer}</p>
-          )}
-        </div>
-      ))}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {/* Answer */}
+            <div
+              className={`overflow-hidden transition-all duration-300 ${
+                activeIndex === index ? "max-h-[500px] p-4" : "max-h-0"
+              }`}
+            >
+              <p className="text-gray-700">{faq.answer}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
