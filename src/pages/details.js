@@ -18,10 +18,139 @@ import { FaParking, FaMusic, FaWineBottle, FaChair } from "react-icons/fa";
 import { MdOutlineOutdoorGrill, MdOutlineEventAvailable } from "react-icons/md";
 import { GiChefToque, GiChariot } from "react-icons/gi";
 import { BsStars } from "react-icons/bs";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import Modal from "react-modal";
+import { useCallback, useEffect, useState } from "react";
+import { GOOGLE_MAP_API } from "../../config";
 
 export default function Details() {
+  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState();
+  const [coords, setCoords] = useState({
+    lat: 25.2048,
+    lng: 55.2708,
+  });
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: GOOGLE_MAP_API,
+    // libraries: ['geometry', 'drawing'],
+  });
+  function getAddressFromLatLong(lat, lng) {
+    const apiKey = GOOGLE_MAP_API; // Replace with your actual API key
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "OK") {
+          const address = data.results[0].formatted_address; // Get the formatted address
+          return address;
+        } else {
+          throw new Error("Reverse geocoding failed: " + data.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return null;
+      });
+  }
+  const handleMapClick = useCallback(
+    (event) => {
+      const newCoords = { ...coords };
+      console.log(event);
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      console.log(lat, lng);
+      newCoords.lat = lat;
+      newCoords.lng = lng;
+      getAddressFromLatLong(lat, lng).then((res) => {
+        setAddress(res);
+      });
+      setCoords(newCoords);
+    },
+    [coords, setCoords]
+  );
+
+  const customStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.6)", // Black with opacity of 0.2
+    },
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      width: "90vw",
+      maxHeight: "80vh",
+      overflow: "auto",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  const closeCancel = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    getAddressFromLatLong(coords.lat, coords.lng).then((res) => {
+      console.log(res);
+      setAddress(res);
+    });
+  }, []);
   return (
     <div className="text-gray-800">
+      <Modal
+        isOpen={open}
+        contentLabel="Example Modal"
+        ariaHideApp={false}
+        style={{
+          ...customStyles,
+          content: {
+            ...customStyles.content,
+            width: "80vw",
+          },
+        }}
+        onRequestClose={closeCancel}
+      >
+        <div className="w-full">
+          <p className="font-PoppinsSemiBold text-2xl mb-3">{address}</p>
+          <div className="">
+            {isLoaded && (
+              <GoogleMap
+                // mapTypeId="hybrid"
+                mapContainerStyle={{
+                  height: "450px",
+                  width: "100%",
+                  borderRadius: "10px",
+                }}
+                zoom={10}
+                center={coords}
+                onClick={handleMapClick}
+                options={{
+                  disableDefaultUI: true, // Disable all default UI
+                  zoomControl: false, // Hide zoom control
+                  mapTypeControl: false, // Hide map type control
+                  scaleControl: false, // Hide scale control
+                  streetViewControl: false, // Hide street view control
+                  rotateControl: false, // Hide rotate control
+                  fullscreenControl: false, // Hide fullscreen control
+                }}
+              >
+                <Marker position={coords} />
+              </GoogleMap>
+            )}
+          </div>
+          <div className="flex w-full justify-end my-3">
+            <button
+              className="mt-3 border border-black rounded-lg p-2 px-5 text-sm"
+              onClick={() => setOpen(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </Modal>
       <Header />
       <main className="container mx-auto p-6">
         <SearchForm />
@@ -71,24 +200,68 @@ export default function Details() {
 
           {/* Image Gallery */}
           <div className="grid grid-cols-4 gap-2">
-            <div className="col-span-2 bg-gray-200 h-[22.5rem]">
+            <div className="col-span-2 h-[22.5rem]">
               <img src="/pasta2.png" className="h-full w-full object-cover" />
             </div>
             <div className="grid grid-cols-2 gap-2 col-span-2">
-              <div className="bg-gray-200 h-44">
-                <img src="/pasta1.png" className="w-full h-full object-cover" />
+              <div className="col-span-2 p-4 pb-0">
+                <div className="space-y-4">
+                  <h1 className="text-3xl font-PoppinsBold">
+                    Boulders Resort & Spa Scottsdale, Curio Collection by Hilton
+                  </h1>
+                  <p className=" text-sm">
+                    Luxury Scottsdale hotel in Pinnacle Peak with 5 restaurants
+                  </p>
+                </div>
               </div>
-              <div className="bg-gray-200 h-44">
-                {" "}
-                <img src="/pasta5.png" className="w-full h-full object-cover" />
+              <div className="h-44 p-4 pt-0">
+                <div className="flex items-center space-x-4 mb-2">
+                  <div className="bg-green-600 text-white px-2 py-1 rounded-md text-sm">
+                    8.8
+                  </div>
+                  <p className="text-gray-900 font-medium">Excellent</p>
+                </div>
+                <p className=" text-sm">
+                  Guests liked: Friendly staff, spacious rooms, property
+                  condition
+                </p>
+                <button
+                  className="mt-3 border border-green-500 text-green-700 rounded-lg p-2 px-5 text-sm"
+                  onClick={() => setOpen(true)}
+                >
+                  View Full Map
+                </button>
               </div>
-              <div className="bg-gray-200 h-44">
-                {" "}
-                <img src="/pasta3.png" className="w-full h-full object-cover" />
-              </div>
-              <div className="bg-gray-200 h-44">
-                {" "}
-                <img src="/pasta4.png" className="w-full h-full object-cover" />
+              <div className="h-44 ">
+                <div className="w-full">
+                  <div className="">
+                    {isLoaded && (
+                      <GoogleMap
+                        // mapTypeId="hybrid"
+                        mapContainerStyle={{
+                          height: "200px",
+                          width: "100%",
+                          borderRadius: "10px",
+                        }}
+                        zoom={10}
+                        center={coords}
+                        onClick={handleMapClick}
+                        options={{
+                          disableDefaultUI: true, // Disable all default UI
+                          zoomControl: false, // Hide zoom control
+                          mapTypeControl: false, // Hide map type control
+                          scaleControl: false, // Hide scale control
+                          streetViewControl: false, // Hide street view control
+                          rotateControl: false, // Hide rotate control
+                          fullscreenControl: false, // Hide fullscreen control
+                        }}
+                      >
+                        <Marker position={coords} />
+                      </GoogleMap>
+                    )}
+                  </div>
+                  <p className="font-PoppinsSemiBold text-sm mt-2">{address}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -112,23 +285,6 @@ export default function Details() {
           </div> */}
 
           {/* Main Details */}
-          <div className="space-y-4">
-            <h1 className="text-2xl font-bold">
-              Boulders Resort & Spa Scottsdale, Curio Collection by Hilton
-            </h1>
-            <p className=" text-sm">
-              Luxury Scottsdale hotel in Pinnacle Peak with 5 restaurants
-            </p>
-            <div className="flex items-center space-x-4">
-              <div className="bg-green-600 text-white px-2 py-1 rounded-md text-sm">
-                8.8
-              </div>
-              <p className="text-gray-900 font-medium">Excellent</p>
-            </div>
-            <p className=" text-sm">
-              Guests liked: Friendly staff, spacious rooms, property condition
-            </p>
-          </div>
 
           {/* Amenities Section */}
           <div className="space-y-4">
@@ -177,25 +333,16 @@ export default function Details() {
                 See more dining options nearby
               </a>
             </div>
-            <div className="w-96 h-48 rounded-md flex items-center justify-center">
-              {/* Placeholder for an image or map */}
-              <img
-                src="/map.png"
-                className="rounded w-full h-full object-cover"
-              />
-            </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Left Section */}
+        {/* <div className="flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-1/5">
             <h1 className="text-2xl font-bold text-gray-900">
               Add this to favorites
             </h1>
           </div>
 
-          {/* Right Section */}
           <div className="p-6 pt-0 w-full md:w-4/5">
             <h1 className="text-3xl font-bold text-gray-900">
               The Gourmet Kitchen & Lounge
@@ -215,7 +362,6 @@ export default function Details() {
               collection and exemplary service.
             </p>
 
-            {/* Highlights */}
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               Highlights you’ll enjoy at this restaurant:
             </h2>
@@ -244,7 +390,6 @@ export default function Details() {
               </li>
             </ul>
 
-            {/* Dining Features */}
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
               Dining features
             </h2>
@@ -255,7 +400,6 @@ export default function Details() {
               provide a relaxed yet sophisticated environment.
             </p>
 
-            {/* Additional Amenities */}
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               Additional amenities include:
             </h2>
@@ -282,17 +426,16 @@ export default function Details() {
               See less
             </p>
 
-            {/* Languages */}
             <h2 className="text-xl font-semibold text-gray-900 mt-8">
               Languages
             </h2>
             <p className="text-gray-700">English, French, Spanish</p>
           </div>
-        </div>
+        </div> */}
 
-        <Accessibility />
+        {/* <Accessibility />
         <FAQs />
-        <Policies />
+        <Policies /> */}
         {/* <CheckInCheckOut />
         <ImportantInformation />
         <Reviews /> */}

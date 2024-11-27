@@ -172,7 +172,7 @@ const SearchForm = () => {
 
 
         <div className="flex items-center justify-center">
-          <div className="mb-4 w-2/4 z-50">
+          <div className="mb-4 w-2/4">
             <label className="block mb-1 font-PoppinsSemiBold text-gray-700 text-[1rem]">Select City</label>
             <Select
               options={cities.map(city => ({
@@ -192,7 +192,7 @@ const SearchForm = () => {
             />
           </div>
 
-          <div className="mb-4 w-2/4 z-50 mx-4">
+          <div className="mb-4 w-2/4 mx-4">
             <label className="block mb-1 font-PoppinsSemiBold text-gray-700 text-[1rem]">
               Select Restaurant
             </label>
