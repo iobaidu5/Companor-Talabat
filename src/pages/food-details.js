@@ -11,63 +11,63 @@ import axios from "axios";
 import ProductCard from "@/components/ProductCard";
 import AdBanner from "@/components/AdBanner";
 
-export const products = [
-  {
-    id: 1,
-    name: "Margherita Pizza",
-    category: "Italian",
-    ingredients: ["Mozzarella", "Tomato Sauce", "Basil"],
-    location: "Naples, Italy",
-    description:
-      "A classic Italian pizza made with a simple and delicious combination of mozzarella, fresh tomato sauce, and fragrant basil leaves.",
-    image: "/images/1.png",
-    price: "12",
-  },
-  {
-    id: 2,
-    name: "Sushi Platter",
-    category: "Japanese",
-    ingredients: ["Rice", "Raw Fish", "Seaweed", "Vegetables"],
-    location: "Tokyo, Japan",
-    description:
-      "An assortment of fresh sushi rolls made with premium-quality fish, perfectly seasoned rice, and a variety of fresh vegetables.",
-    image: "/images/2.png",
-    price: "25",
-  },
-  {
-    id: 3,
-    name: "Tacos Al Pastor",
-    category: "Mexican",
-    ingredients: ["Marinated Pork", "Pineapple", "Corn Tortilla"],
-    location: "Mexico City, Mexico",
-    description:
-      "A delicious and flavorful Mexican dish made with marinated pork, pineapple, and served on soft corn tortillas.",
-    image: "/images/3.png",
-    price: "8",
-  },
-  {
-    id: 4,
-    name: "Butter Chicken",
-    category: "Indian",
-    ingredients: ["Chicken", "Butter", "Tomato Gravy", "Spices"],
-    location: "Delhi, India",
-    description:
-      "A rich and creamy Indian curry made with tender chicken cooked in a flavorful tomato-based gravy with aromatic spices.",
-    image: "/images/4.png",
-    price: "15",
-  },
-  {
-    id: 5,
-    name: "French Croissant",
-    category: "French",
-    ingredients: ["Flour", "Butter", "Yeast"],
-    location: "Paris, France",
-    description:
-      "A buttery and flaky French pastry, perfectly golden and deliciously light, ideal for breakfast or a snack.",
-    image: "/images/5.png",
-    price: "5",
-  },
-];
+// export const products = [
+//   {
+//     id: 1,
+//     name: "Margherita Pizza",
+//     category: "Italian",
+//     ingredients: ["Mozzarella", "Tomato Sauce", "Basil"],
+//     location: "Naples, Italy",
+//     description:
+//       "A classic Italian pizza made with a simple and delicious combination of mozzarella, fresh tomato sauce, and fragrant basil leaves.",
+//     image: "/images/1.png",
+//     price: "12",
+//   },
+//   {
+//     id: 2,
+//     name: "Sushi Platter",
+//     category: "Japanese",
+//     ingredients: ["Rice", "Raw Fish", "Seaweed", "Vegetables"],
+//     location: "Tokyo, Japan",
+//     description:
+//       "An assortment of fresh sushi rolls made with premium-quality fish, perfectly seasoned rice, and a variety of fresh vegetables.",
+//     image: "/images/2.png",
+//     price: "25",
+//   },
+//   {
+//     id: 3,
+//     name: "Tacos Al Pastor",
+//     category: "Mexican",
+//     ingredients: ["Marinated Pork", "Pineapple", "Corn Tortilla"],
+//     location: "Mexico City, Mexico",
+//     description:
+//       "A delicious and flavorful Mexican dish made with marinated pork, pineapple, and served on soft corn tortillas.",
+//     image: "/images/3.png",
+//     price: "8",
+//   },
+//   {
+//     id: 4,
+//     name: "Butter Chicken",
+//     category: "Indian",
+//     ingredients: ["Chicken", "Butter", "Tomato Gravy", "Spices"],
+//     location: "Delhi, India",
+//     description:
+//       "A rich and creamy Indian curry made with tender chicken cooked in a flavorful tomato-based gravy with aromatic spices.",
+//     image: "/images/4.png",
+//     price: "15",
+//   },
+//   {
+//     id: 5,
+//     name: "French Croissant",
+//     category: "French",
+//     ingredients: ["Flour", "Butter", "Yeast"],
+//     location: "Paris, France",
+//     description:
+//       "A buttery and flaky French pastry, perfectly golden and deliciously light, ideal for breakfast or a snack.",
+//     image: "/images/5.png",
+//     price: "5",
+//   },
+// ];
 
 const FoodDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState({});
@@ -75,10 +75,7 @@ const FoodDetails = () => {
   const [direction, setDirection] = useState({});
 
   const router = useRouter();
-  const { cityId, restaurantId, category, foodByCity, searchedFood, filter } =
-    router.query;
-
-  console.log("router.query filter -> ", filter);
+  const { cityId, restaurantId, category, foodByCity, searchedFood, filter } = router.query;
 
   const [foodItems, setFoodItems] = useState([]);
 
@@ -134,12 +131,30 @@ const FoodDetails = () => {
   };
 
   useEffect(() => {
+
     if (cityId && restaurantId) {
-      fetch(`/api/fooditems?cityId=${cityId}&restaurantId=${restaurantId}`)
-        .then((res) => res.json())
-        .then((data) => setFoodItems(data.foodItems));
+      const fetchFoodItems = async () => {
+        try {
+          const response = await axios.get(`/api/fooditems?cityId=${cityId}&restaurantId=${restaurantId}`,{
+            params: {
+              page: currentPage,
+              limit: itemsPerPage,
+            },
+          });
+
+          setFoodItems(response.data.foodItems);
+          setTotalPages(response.data.totalPages);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching food items:", error);
+          setLoading(false);
+        }
+      };
+
+      fetchFoodItems();
     }
-  }, [cityId, restaurantId]);
+
+  }, [cityId, restaurantId, currentPage]);
 
   useEffect(() => {
     if (category) {
@@ -253,6 +268,7 @@ const FoodDetails = () => {
   }, [foodByCity, currentPage]);
 
   const handlePageChange = (page) => {
+    console.log("page ", page)
     setCurrentPage(page);
   };
 
@@ -300,7 +316,7 @@ const FoodDetails = () => {
   return (
     <>
       <Header />
-      <main className="container mx-auto p-6">
+      <main className="container-fluid section p-6">
         <SearchForm />
         <div className="flex mt-4">
           <div className="w-[20%]">
@@ -329,84 +345,12 @@ const FoodDetails = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4">
-              {products.map((food, index) => (
+              {foodItems.map((food, index) => (
                 <ProductCard key={index} food={food} />
               ))}
             </div>
-            {/* <div>
-              {foodItems.map((hotel)  => {
-                var activeImage = hotel.image[activeImageIndex[hotel._id]] || hotel.image;
-                const animationClasses = isAnimating[hotel._id]
-                  ? direction[hotel._id] === 'next'
-                    ? 'opacity-0 translate-x-10'
-                    : 'opacity-0 -translate-x-10'
-                  : 'opacity-100 translate-x-0';
-
-
-                  return (
-                    <Link key={hotel._id} href={hotel.restaurants[0].link}>
-                      <div className="flex rounded-xl shadow-md overflow-hidden bg-white w-full p-4 mb-4">
-                        <div className="relative w-1/3">
-                          <img
-                            src={activeImage}
-                            alt="Hotel"
-                            className={`object-cover w-full h-56 transition-all duration-300 transform ${animationClasses}`}
-                          />
-                          <div className="absolute inset-0 flex items-center justify-between px-2">
-                            <button
-                              className="w-10 h-10 p-2 bg-gray-800 opacity-70 rounded-full"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handlePrevImage(hotel._id);
-                              }}
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                              </svg>
-                            </button>
-                            <button
-                              className="w-10 h-10 p-2 bg-gray-800 opacity-70 rounded-full"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleNextImage(hotel._id);
-                              }}
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="w-2/3 p-4 flex flex-col justify-between">
-                          <div>
-                            <h2 className="text-2xl font-bold text-gray-800">{hotel.itemName}</h2>
-                            <p className="text-lg text-gray-500">{hotel.description}</p>
-                            <p className="mt-2 text-lg text-green-600 font-semibold">{hotel.category}</p>
-                          </div>
-                          <div className="flex justify-between items-center mt-4">
-                            <div className="flex items-center space-x-2">
-                              <span className="bg-green-500 text-white text-sm font-bold rounded px-3 py-2">
-                                {hotel.reviews[0] || '5.0'}
-                              </span>
-                              <p className="text-lg text-gray-700 font-semibold">{hotel.category}</p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-lg font-semibold text-gray-800">KWD {hotel.restaurants[0].price}</p>
-                              <p className="text-sm text-gray-500">{hotel.totalPrice}</p>
-                              <p className="text-sm text-gray-500">{hotel.restaurants[0].source}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-              })}
-            </div> */}
-
-            {/* Pagination Controls */}
+          
             <div className="flex justify-center items-center space-x-2 mt-6">
-              {/* Previous Button */}
               {pageGroupStart > 1 && (
                 <button
                   onClick={goToPreviousGroup}
@@ -416,7 +360,6 @@ const FoodDetails = () => {
                 </button>
               )}
 
-              {/* Page Buttons */}
               {Array.from({
                 length: Math.min(
                   paginationGroupSize,

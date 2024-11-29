@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="container mx-auto p-6">
+      <main className="container-fluid section p-6">
         <SearchForm />
         <EarnCard />
         <FavoriteStaySlider />

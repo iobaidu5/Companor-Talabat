@@ -72,8 +72,12 @@ const SearchForm = () => {
   useEffect(() => {
     fetch("/api/cities")
       .then((res) => res.json())
-      .then((data) => setCities(data.cities));
+      .then((data) => {
+        const sortedCities = data.cities.sort((a, b) => b.cityName.localeCompare(a.cityName));
+        setCities(sortedCities);
+      });
   }, []);
+  
 
   const fetchRestaurants = (cityId) => {
     fetch(`/api/restaurants?cityId=${cityId}`)

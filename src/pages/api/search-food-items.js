@@ -7,7 +7,6 @@ export default async function handler(req, res) {
 
   const { query, page = 1, limit = 10 } = req.query;
 
-  // Make sure query is provided
   if (!query) {
     return res.status(400).json({ error: 'Search query is required' });
   }

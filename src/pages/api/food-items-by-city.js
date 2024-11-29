@@ -13,14 +13,12 @@ export default async function handler(req, res) {
     const limitInt = parseInt(limit, 10);
     const skip = (pageInt - 1) * limitInt;
 
-    // Fetch food items with pagination
     const foodItems = await db.collection('fooditems')
       .find({ city: new ObjectId(foodByCity) })
       .skip(skip)
       .limit(limitInt)
       .toArray();
 
-    // Get total count of food items for the city to calculate total pages
     const totalItems = await db.collection('fooditems')
       .countDocuments({ city: new ObjectId(foodByCity) });
     const totalPages = Math.ceil(totalItems / limitInt);
