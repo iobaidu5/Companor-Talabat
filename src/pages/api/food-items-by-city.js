@@ -6,22 +6,35 @@ export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db('scrapped');
 
-  const { foodByCity, page = 1, limit = 10 } = req.query;  // Default to page 1, 10 items per page
+  const { foodByCity, page = 1, limit = 10 } = req.query; 
 
   try {
     const pageInt = parseInt(page, 10);
     const limitInt = parseInt(limit, 10);
     const skip = (pageInt - 1) * limitInt;
 
-    const foodItems = await db.collection('fooditems')
+    let foodItems = await db.collection('fooditems')
       .find({ city: new ObjectId(foodByCity) })
       .skip(skip)
       .limit(limitInt)
       .toArray();
 
+
+      console.log("foodItems by citt _> ", foodItems)
+
+
+    let cityName = await db.collection('cities').findOne({ _id: new ObjectId(foodByCity) });
+    const restaurant = await db.collection('restaurants').findOne({ cityId: new ObjectId(foodByCity) });
+
     const totalItems = await db.collection('fooditems')
       .countDocuments({ city: new ObjectId(foodByCity) });
     const totalPages = Math.ceil(totalItems / limitInt);
+
+    foodItems = foodItems.map(item => ({
+      ...item, 
+      city: cityName.cityName,
+      restaurant: restaurant.name
+    }));  
 
     res.json({ foodItems, totalPages, currentPage: pageInt });
   } catch (error) {

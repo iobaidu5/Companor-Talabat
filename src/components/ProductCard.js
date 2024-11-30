@@ -3,17 +3,19 @@ import Link from "next/link";
 
 const ProductCard = ({ food }) => {
   function formatCityName(city) {
+    if (!city) return '';
     return city
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
 
+  console.log("Food food food", food)
+  
+
   return (
-    // Wrap the entire card with the Link component
-    <Link href={`/product/${food.id}`} passHref>
+    <Link href={`/${food._id}`} passHref>
       <div className="border border-gray-200 rounded-lg shadow-md flex overflow-hidden w-full cursor-pointer">
-        {/* Image Section */}
         <div className="h-56 w-2/5">
           <img
             src={food.image}
@@ -44,16 +46,16 @@ const ProductCard = ({ food }) => {
 
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
-              <div className="bg-green-600 text-white font-semibold text-sm rounded-md px-3 py-1">
-                {(4).toFixed(1)}
+              <div className="bg-green-300 text-white font-semibold text-sm rounded-md px-3 py-1">
+                {food?.info[0]?.icon || "☺️"}
               </div>
               <div>
-                <p className="text-gray-900 text-sm">Very Good</p>
-                <p className="text-gray-500 text-sm">{food.reviews} reviews</p>
+                <p className="text-gray-900 text-sm">{food?.info[0]?.rating || "Very Good"}</p>
+                <p className="text-gray-500 text-sm">{food.reviews}</p>
               </div>
             </div>
             <div>
-              <p className="text-gray-900 text-sm mt-4">{food.restaurants[0].source}</p>
+              <p className="text-gray-900 text-sm mt-4">{food?.info[0]?.cuisines || "Cuisines"}</p>
             </div>
             <div>
               <p className="text-primary font-PoppinsSemiBold mt-4">KD {food.restaurants[0].price}</p>
