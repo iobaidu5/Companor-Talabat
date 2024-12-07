@@ -114,7 +114,7 @@ const FavoriteStaySlider = () => {
           </div>
         ))}
       </Slider>
-      <div className="bg-gray-200">
+      <div className="bg-gray-200 mt-5">
       <AdBanner
         dataAdSlot="1630442794"
         dataAdFormat="auto"

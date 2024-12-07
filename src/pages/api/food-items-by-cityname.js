@@ -6,8 +6,18 @@ export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db('scrapped');
 
-  const { foodByCity, page = 1, limit = 10 } = req.query; 
+  const { cityName, page = 1, limit = 10 } = req.query; 
 
+  var foodByCity = null;
+
+  if(cityName){
+    let cityId = await db.collection('cities').findOne({
+      cityName: { $regex: cityName, $options: 'i' }
+    });
+    if(cityId){
+      foodByCity = cityId._id;
+    }
+  }
 
   try {
     const pageInt = parseInt(page, 10);

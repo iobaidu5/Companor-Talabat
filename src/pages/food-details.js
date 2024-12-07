@@ -77,7 +77,7 @@ const FoodDetails = () => {
   const [direction, setDirection] = useState({});
 
   const router = useRouter();
-  const { cityId, restaurantId, category, foodByCity, searchedFood, filter } = router.query;
+  const { cityId, restaurantId, category, foodByCity, searchedFood, filter, foodByCityName } = router.query;
 
   const [foodItems, setFoodItems] = useState([]);
 
@@ -252,22 +252,53 @@ const FoodDetails = () => {
   useEffect(() => {
     const fetchFoodItems = async () => {
       try {
-        const response = await axios.get("/api/food-items-by-city", {
-          params: { foodByCity, page: currentPage, limit: itemsPerPage },
-        });
-        setFoodItems(response.data.foodItems);
-        setTotalPages(response.data.totalPages);
-        setLoading(false);
+        if (foodByCityName) {
+          const response = await axios.get("/api/food-items-by-city", {
+            params: { cityName: foodByCityName, page: currentPage, limit: itemsPerPage },
+          });
+          setFoodItems(response.data.foodItems);
+          setTotalPages(response.data.totalPages);
+          setLoading(false);
+        } else {
+          const response = await axios.get("/api/food-items-by-city", {
+            params: { foodByCity, page: currentPage, limit: itemsPerPage },
+          });
+          setFoodItems(response.data.foodItems);
+          setTotalPages(response.data.totalPages);
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching food items:", error);
         setLoading(false);
       }
     };
 
-    if (foodByCity) {
+    if (foodByCity || foodByCityName) {
       fetchFoodItems();
     }
-  }, [foodByCity, currentPage]);
+  }, [foodByCity, currentPage, foodByCityName]);
+
+
+  useEffect(() => {
+    const fetchFoodItems = async () => {
+      try {
+        const response = await axios.get("/api/food-items-by-cityname", {
+          params: { cityName: foodByCityName, page: currentPage, limit: itemsPerPage },
+        });
+        setFoodItems(response.data.foodItems);
+        setTotalPages(response.data.totalPages);
+        setLoading(false);
+
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+        setLoading(false);
+      }
+    };
+
+    if (foodByCityName) {
+      fetchFoodItems();
+    }
+  }, [currentPage, foodByCityName]);
 
   const handlePageChange = (page) => {
     console.log("page ", page)
@@ -319,10 +350,15 @@ const FoodDetails = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4">
-              {foodItems.map((food, index) => (
-                <ProductCard key={index} food={food} />
-              ))}
+              {foodItems.length > 0 ? (
+                foodItems.map((food, index) => (
+                  <ProductCard key={index} food={food} />
+                ))
+              ) : (
+                <div className="text-center text-gray-500 font-medium">No Item Found</div>
+              )}
             </div>
+
 
             <div className="flex justify-center items-center space-x-2 mt-6">
               {pageGroupStart > 1 && (

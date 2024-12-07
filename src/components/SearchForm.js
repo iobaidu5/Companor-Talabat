@@ -12,14 +12,144 @@ const SearchForm = () => {
   const [disabledRestaurant, setDisabledRestaurant] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
-  
+  const [selectedState, setSelectedState] = useState(null);
+
+  const handleClick = (stateName) => {
+    setSelectedState(selectedState === stateName ? null : stateName);
+  };
+
   const states = [
-    { name: "Kuwait City", cities: ["Los Angeles", "San Francisco", "San Diego"] },
-    { name: "Hawally", cities: ["New York City", "Buffalo", "Rochester"] },
-    { name: "Farwaniya", cities: ["Houston", "Dallas", "Austin"] },
-    { name: "Ahmadi", cities: ["Houston", "Dallas", "Austin"] },
-    { name: "Al Jahra", cities: ["Houston", "Dallas", "Austin"] },
-    { name: "Mubarak Al-kabir", cities: ["Houston", "Dallas", "Austin"] },
+    {
+      name: "Kuwait City", cities: [
+        "Nahda",
+        "Jaber Al Ahmad",
+        "Qortuba",
+        "Yarmouk",
+        "Dasma",
+        "Shuwaikh Educational",
+        "North West Sulaibikhat",
+        "Shuwaikh Medical",
+        "Shuwaikh Residential",
+        "Shuwaikh Administrative",
+        "Shuwaikh Industrial 1",
+        "Shuwaikh Industrial 2",
+        "Shuwaikh Industrial 3",
+        "Qadsiya",
+        "Nuzha",
+        "Adailiya",
+        "Salhiya",
+        "Daiya",
+        "Surra"
+      ]
+    },
+    {
+      name: "Hawally", cities: [
+        "Hitteen",
+        "Salam",
+        "Al-Bedae",
+        "test-101",
+        "Jabriya",
+        "Bayan",
+        "Zahra",
+        "Ministries Zone",
+        "Rumaithiya",
+        "Maidan Hawally",
+        "Hawally",
+        "Mubarak Al-Abdullah - West Mishref",
+        "Shuhada",
+        "Siddiq",
+        "Salmiya",
+        "Mishrif",
+        "Shaab",
+        "Salwa"
+      ]
+    },
+    {
+      name: "Farwaniya", cities: [
+        "Andalous",
+        "Kuwait Free Trade Zone",
+        "Ardhiya 4",
+        "Ferdous",
+        "Ardhiya",
+        "Sabah Al-Nasser",
+        "West Abdullah Al Mubarak",
+        "South Abdullah Al Mubarak",
+        "Farwaniya",
+        "Jeleeb Al-Shuyoukh",
+        "Khaitan",
+        "Rai",
+        "Ashbeliah",
+        "Abdullah Al-Mubarak - West Jeleeb",
+        "Reggai",
+        "Omariya",
+        "Rabiya",
+        "Rehab",
+        "Sheikh Saad Al Abdullah Airport"
+      ]
+    },
+    {
+      name: "Ahmadi", cities: [
+        "Abu Halifa",
+        "Wafra residential",
+        "Sabah Al Ahmad Marine City",
+        "Wafra farms",
+        "Mahboula",
+        "Khairan",
+        "Riqqa",
+        "Nuwaiseeb",
+        "Zour",
+        "Shalayhat Al Dubaiya",
+        "Sabah Al Ahmad 2",
+        "Bnaider",
+        "Al-Julaia'a",
+        "South Sabahiya",
+        "Sabah Al Ahmad 4",
+        "Fintas",
+        "Bnaider-test",
+        "Talabat Island",
+        "Magwa"
+      ]
+    },
+    {
+      name: "Al Jahra", cities: [
+        "Jahra - Sulaibiya",
+        "Jahra - Al Naeem",
+        "Jahra - Amgarah Industrial",
+        "Jahra - Taima",
+        "Jahra - Oyoun",
+        "Jahra - Kabd",
+        "Al Mutla",
+        "Jahra - Qasr",
+        "Jahra - Sulaibiya Industrial 1",
+        "Jahra - Jahra Industrial Area",
+        "Jahra - Jahra Area",
+        "Jahra - Sulaibiya Industrial 2",
+        "Jahra - Sulaibiya Residential",
+        "Jahra - Nasseem",
+        "Jahra - Waha",
+        "Jahra Qairawan - South Doha",
+        "Jahra - Saad Al Abdullah"
+      ]
+    },
+    {
+      name: "Mubarak Al-kabir", cities: [
+        "Al-Qusour",
+        "Abu Ftaira",
+        "West Abu Fetera Small Indust",
+        "Al Masayel",
+        "Murouj",
+        "Messila",
+        "Al-Qurain",
+        "Fnaitess",
+        "Sabah Al-Salem",
+        "Adan",
+        "Abu Hasaniya",
+        "Sabhan Industrial",
+        "South Wista",
+        "Wista",
+        "Mubarak Al-Kabir"
+      ]
+    },
   ];
 
   useEffect(() => {
@@ -47,8 +177,7 @@ const SearchForm = () => {
     fetch("/api/cities")
       .then((res) => res.json())
       .then((data) => {
-        const sortedCities = data.cities.sort((a, b) => b.cityName.localeCompare(a.cityName));
-        setCities(sortedCities);
+        setCities(data.cities);
       });
   }, []);
 
@@ -64,6 +193,11 @@ const SearchForm = () => {
     setDisabledRestaurant(false);
   };
 
+  const handleCityFromState = (e) => {
+    router.push(`/food-details?foodByCityName=${e}`);
+    setSelectedState(null)
+  };
+
   const handleRestaurantChange = (e) => {
     setSelectedRestaurant(e);
     router.push(`/food-details?cityId=${selectedCity.value}&restaurantId=${e.value}`);
@@ -73,31 +207,37 @@ const SearchForm = () => {
     <div className="w-full mx-auto bg-white px-6 pb-4 rounded-lg shadow-md mb-5 border border-gray-300">
       <div className="max-w-10xl mx-auto bg-white p-6 rounded-lg">
         {/* Tabs Section */}
+
         <div className="flex justify-center mb-6 space-x-4 border-b border-gray-300 pb-4">
           {states.map((state, index) => (
             <div
               key={index}
-              className="relative group cursor-pointer"
+              className="relative cursor-pointer"
             >
-              <div className="font-semibold text-lg px-2 py-1 hover:text-primary-indigo-hover transition-all">
+              <div
+                className={`font-semibold text-lg px-2 py-1 transition-all ${selectedState === state.name ? 'border-b-2 border-customOrange' : ''
+                  }`}
+                onClick={() => handleClick(state.name)}
+              >
                 {state.name}
               </div>
-              <div className="absolute left-0 w-6xl rounded-lg bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="py-2">
-                  {state.cities.map((city, i) => (
-                    <div key={i} className="px-4 py-2 text-gray-600 hover:bg-gray-100 cursor-pointer">
-                      {city}
-                    </div>
-                  ))}
+
+              {selectedState === state.name && (
+                <div className="absolute left-0 w-6xl rounded-lg bg-white shadow-md transition-opacity duration-300" style={{ zIndex: "10000" }}>
+                  <div className="py-2">
+                    {state.cities.map((city, i) => (
+                      <div key={i} className="px-4 py-2 text-gray-600  font-bold text-md font-nunito hover:bg-gray-100 cursor-pointer whitespace-nowrap" onClick={() => handleCityFromState(city)}>
+                        {city}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full border-b-2 border-transparent group-hover:border-customOrange transition-all duration-300 relative z-[10000] bg-white"></div>
+              )}
             </div>
           ))}
         </div>
 
         <div className="flex items-center justify-center gap-6">
-          {/* City Selection */}
           <div className="w-full">
             <label className="text-gray-600 hover:text-primary-indigo-hover font-bold text-lg font-nunito hidden lg:block">
               Select City

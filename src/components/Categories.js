@@ -91,11 +91,6 @@ const Categories = () => {
             </div>
           ))}
         </div>
-        {selectedCategory && (
-          <div className="mt-6 text-center text-lg font-semibold text-blue-600">
-            Selected Category: <span>{selectedCategory}</span>
-          </div>
-        )}
       </div>
     </>
   );

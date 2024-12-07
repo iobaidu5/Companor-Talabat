@@ -10,6 +10,7 @@ import axios from "axios";
 import ProductCardGrid from "@/components/ProductCardGrid";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
+import Link from "next/link";
 
 export default function ProductDetails() {
 
@@ -207,16 +208,17 @@ export default function ProductDetails() {
         <SearchForm />
         <div className="p-6 space-y-8">
           {/* Header Section */}
-          {loading ? <Loading /> : <div className="flex justify-between items-center">
+          {loading ? <Loading /> : <div className="flex justify-between items-center mb-2">
             <a
               href="#"
-              className="text-blue-600 text-sm font-medium"
+              className="text-customOrange text-sm font-medium flex items-center space-x-2 transition-all hover:text-customOrange hover:no-underline"
               onClick={(e) => {
-                e.preventDefault()
+                e.preventDefault();
                 router.back();
               }}
             >
-              &lt; See all Foods
+              <span className="text-lg font-bold">&lt;</span>
+              <span>See all Foods</span>
             </a>
             <div className="flex space-x-4">
               <button className="flex items-center space-x-2">
@@ -256,88 +258,98 @@ export default function ProductDetails() {
             </div>
           </div>}
 
-          {loading ? <Loading /> : <div className="flex flex-col md:flex-row gap-6 p-2 border border-gray-200 rounded-lg shadow-md cursor-pointer">
-            <div className="md:w-1/2 h-[22.5rem]">
-              <img
-                src={foodItems.image}
-                className="h-full w-full object-cover rounded-lg"
-                alt={foodItems.itemName}
-              />
-            </div>
-            <div className="md:w-1/2 flex flex-col md:flex-row justify-between gap-6 relative">
-              <div className="flex flex-col py-5 justify-between w-full md:w-1/2">
-                <div>
-                  <h1 className="text-3xl font-PoppinsBold" style={{lineHeight: "1.4"}}>{foodItems.itemName}</h1>
-                  <p className="text-sm mt-2">{foodItems.description}</p>
-                  <div>
-                    <p className="text-sm mt-2 text-left py-2">{foodItems.category}</p>
-                  </div>
+          {loading ? <Loading /> :
+            <Link
+              href={`${foodItems.restaurants[0].link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+
+              <div className="flex flex-col md:flex-row gap-6 p-2 border border-gray-200 rounded-lg shadow-md cursor-pointer">
+                <div className="md:w-1/2 h-[22.5rem]">
+                  <img
+                    src={foodItems.image}
+                    className="h-full w-full object-cover rounded-lg"
+                    alt={foodItems.itemName}
+                  />
                 </div>
-                <div>
-                  <div className="text-gray-900 font-medium">
-                    Label Minimum Order Amount: {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.labelMinimumOrderAmount : "0.00"}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-gray-900 text-sm mt-2">
-                    {foodItems?.info && foodItems?.info[0]?.cuisines || "Cuisines"}
-                  </p>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="bg-green-600 text-white px-2 py-1 rounded-md text-sm">
-                    {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.icon : "☺️"}
-                  </div>
-                  <p className="text-gray-900 font-medium">
-                    {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.rating : "Very Good"}
-                  </p>
-                  <p className="text-gray-500 text-sm">{foodItems.reviews}</p>
-                </div>
-              </div>
-              <div className="w-full md:w-1/2 h-80 right-0">
-                <div>
-                  <p className="text-gray-600 text-sm text-right mb-3 mt-1">
-                    <span className="mr-1">📍</span>
-                    {formatCityName(foodItems.city)}
-                  </p>
-                  <div className="text-gray-900 font-medium">
-                    Pre-Order {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.preOrder : "No"}
-                  </div>
-                </div>
-                <div>
-                  <div className=" absolute bottom-0" style={{ width: "49%" }}>
-                    <h1 className="text-1xl font-PoppinsBold mb-5">Explore the area</h1>
-                    {isLoaded && coords?.lat && coords?.lng ? (
-                      <div className="h-full w-full rounded-lg overflow-hidden">
-                        <GoogleMap
-                          mapContainerStyle={{
-                            height: "15rem",
-                            width: "120%",
-                          }}
-                          zoom={10}
-                          center={coords}
-                          options={{
-                            disableDefaultUI: true,
-                            zoomControl: false,
-                            mapTypeControl: false,
-                            scaleControl: false,
-                            streetViewControl: false,
-                            rotateControl: false,
-                            fullscreenControl: false,
-                          }}
-                        >
-                          <Marker position={coords} />
-                        </GoogleMap>
+                <div className="md:w-1/2 flex flex-col md:flex-row justify-between gap-6 relative">
+                  <div className="flex flex-col py-5 justify-between w-full md:w-1/2">
+                    <div>
+                      <h1 className="text-3xl font-PoppinsBold" style={{ lineHeight: "1.4" }}>{foodItems.itemName}</h1>
+                      <p className="text-sm mt-2">{foodItems.description}</p>
+                      <div>
+                        <p className="text-sm mt-2 text-left py-2">{foodItems.category}</p>
                       </div>
-                    ) : (
-                      <p>Loading map...</p>
-                    )}
+                    </div>
+                    <div>
+                      <div className="text-gray-900 font-medium">
+                        Label Minimum Order Amount: {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.labelMinimumOrderAmount : "0.00"}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-gray-900 text-sm mt-2">
+                        {foodItems?.info && foodItems?.info[0]?.cuisines || "Cuisines"}
+                      </p>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-green-300 text-white font-semibold text-sm rounded-md px-3 py-1">
+                        {foodItems?.info && foodItems?.info[0]?.icon != "none" ? foodItems?.info[0]?.icon : "☺️"}
+                      </div>
+                      <p className="text-gray-900 font-medium">
+                        {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.rating : "Very Good"}
+                      </p>
+                      <p className="text-gray-500 text-sm">{foodItems.reviews}</p>
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 h-80 right-0">
+                    <div>
+                      <p className="text-gray-600 text-sm text-right mb-3 mt-1">
+                        <span className="mr-1">📍</span>
+                        {formatCityName(foodItems.city)}
+                      </p>
+                      <div className="text-gray-900 font-medium">
+                        Pre-Order {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.preOrder : "No"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className=" absolute bottom-0" style={{ width: "49%" }}>
+                        <h1 className="text-1xl font-PoppinsBold mb-5">Explore the area</h1>
+                        {isLoaded && coords?.lat && coords?.lng ? (
+                          <div className="h-full w-full rounded-lg overflow-hidden">
+                            <GoogleMap
+                              mapContainerStyle={{
+                                height: "15rem",
+                                width: "120%",
+                              }}
+                              zoom={10}
+                              center={coords}
+                              options={{
+                                disableDefaultUI: true,
+                                zoomControl: false,
+                                mapTypeControl: false,
+                                scaleControl: false,
+                                streetViewControl: false,
+                                rotateControl: false,
+                                fullscreenControl: false,
+                              }}
+                            >
+                              <Marker position={coords} />
+                            </GoogleMap>
+                          </div>
+                        ) : (
+                          <p>Loading map...</p>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
+
+
               </div>
-            </div>
+            </Link>
 
-
-          </div>}
+          }
 
 
           <button
@@ -351,7 +363,7 @@ export default function ProductDetails() {
             Explore Your Menu
           </h2>
           <div className="grid grid-cols-3 gap-4">
-            {loadingCategories ? <Loading />  : foodCategories.slice(0, 6).map((food, index) => (
+            {loadingCategories ? <Loading /> : foodCategories.slice(0, 6).map((food, index) => (
               <ProductCardGrid key={index} food={food} />
             ))}
           </div>
