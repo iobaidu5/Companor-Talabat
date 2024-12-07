@@ -45,7 +45,7 @@ const ProductCard = ({ food }) => {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className="bg-green-300 text-white font-semibold text-sm rounded-md px-3 py-1">
-              {food?.info && food.info[0]?.icon !== "none" ? food.info[0].icon : "☺️"}
+              {food?.info[0] &&  food.info[0].icon && food.info[0]?.icon !== "none" ? food.info[0].icon : "☺️"}
               </div>
               <div>
                 <p className="text-gray-900 text-sm">{food?.info[0]?.rating || "Very Good"}</p>

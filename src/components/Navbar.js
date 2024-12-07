@@ -105,7 +105,7 @@ const Navbar = () => {
             <div className="bg-light-gray w-[2px] h-10" />
             <Link
               href="/orders"
-              className="text-gray-600 hover:text-primary-indigo-hover font-bold text-lg font-nunito hidden lg:block"
+              className="text-gray-600 hover:text-customOrange font-bold text-lg font-nunito hidden lg:block"
             >
               My orders
             </Link>
@@ -122,7 +122,7 @@ const Navbar = () => {
               </div>
             </Link>
             <Link href="/profile">
-              <NavCard className="flex justify-center items-center ring-offset-2 overflow-hidden hover:ring-2 hover:ring-primary-indigo-hover">
+              <NavCard className="flex justify-center items-center ring-offset-2 overflow-hidden hover:customOrange hover:customOrange">
                 <Image
                   src={"/user.png"}
                   alt={"Profile Picture"}
