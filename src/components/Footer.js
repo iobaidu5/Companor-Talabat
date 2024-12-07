@@ -27,37 +27,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#" className="text-[0.9rem]">
-                    List your property
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Partnerships
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
                     Newsroom
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Investor Relations
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Advertising
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Affiliate Marketing
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Feedback
                   </a>
                 </li>
               </ul>
@@ -67,42 +37,12 @@ const Footer = () => {
               <ul className="mt-2 space-y-1">
                 <li>
                   <a href="#" className="text-[0.9rem]">
-                    Travel guide
+                    Restaurants
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-[0.9rem]">
-                    Hotels
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Vacation rentals
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Vacation packages
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Domestic flights
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Car rentals
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Accommodation types
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    One Key credit cards
+                    My Cart
                   </a>
                 </li>
               </ul>
@@ -117,37 +57,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#" className="text-[0.9rem]">
-                    Cookies
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
                     Terms of use
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    One Key™ terms and conditions
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Vrbo terms and conditions
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Accessibility
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Privacy choices
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Content guidelines and reporting
                   </a>
                 </li>
               </ul>
@@ -163,26 +73,6 @@ const Footer = () => {
                 <li>
                   <a href="#" className="text-[0.9rem]">
                     Cancel booking
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Cancel flight
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Refund policies
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    Use a coupon
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-[0.9rem]">
-                    International travel documents
                   </a>
                 </li>
               </ul>

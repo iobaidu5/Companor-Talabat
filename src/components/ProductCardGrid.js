@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const ProductCard = ({ food }) => {
+const ProductCardGrid = ({ food }) => {
   function formatCityName(city) {
     if (!city) return '';
     return city
@@ -10,11 +10,15 @@ const ProductCard = ({ food }) => {
       .join(' ');
   }
 
-
   return (
-    <Link href={`/${food._id}?category=${food.category}`} passHref>
-      <div className="border border-gray-200 rounded-lg shadow-md flex overflow-hidden w-full cursor-pointer">
-        <div className="h-56 w-2/5">
+    <Link
+      href={`${food.restaurants[0].link}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div className="border border-gray-200 rounded-lg shadow-md flex flex-col overflow-hidden w-full cursor-pointer">
+        {/* Image Section */}
+        <div className="h-56 w-full">
           <img
             src={food.image}
             alt={food.itemName}
@@ -23,26 +27,29 @@ const ProductCard = ({ food }) => {
         </div>
 
         {/* Content Section */}
-        <div className="w-3/5 p-4 flex flex-col justify-between">
+        <div className="p-4 flex flex-col space-y-2">
           {/* Title and Category */}
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between w-100">
             <div>
               <h3 className="text-lg font-PoppinsSemiBold">{food.itemName}</h3>
               <p className="text-gray-500 text-sm">👨🏻‍🍳 {formatCityName(food.restaurant)}</p>
             </div>
-            <div><p className="text-gray-500 text-sm">{food.category}</p></div>
+            <div>
+              <p className="text-gray-500 text-sm">{food.category}</p>
+            </div>
           </div>
-
-          <p className="text-gray-600 text-sm flex items-center mt-1">
-            <span className="mr-1">📍</span>
-            {formatCityName(food.city)}
-          </p>
-
-          <p className="text-gray-700 text-sm mt-2 line-clamp-2">
-            {food.description}
-          </p>
-
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between w-100 py-2">
+            <div>
+              <p className="text-gray-600 text-sm flex items-center">
+                <span className="mr-1">📍</span>
+                {formatCityName(food.city)}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-700 text-sm mt-1 line-clamp-2">{food.description}</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className="bg-green-300 text-white font-semibold text-sm rounded-md px-3 py-1">
                 {food?.info[0]?.icon || "☺️"}
@@ -53,10 +60,10 @@ const ProductCard = ({ food }) => {
               </div>
             </div>
             <div>
-              <p className="text-gray-900 text-sm mt-4">{food?.info[0]?.cuisines || "Cuisines"}</p>
+              <p className="text-gray-900 text-sm">{food?.info[0]?.cuisines || "Cuisines"}</p>
             </div>
             <div>
-              <p className="text-primary font-PoppinsSemiBold mt-4">KD {food.restaurants[0].price}</p>
+              <p className="text-primary font-PoppinsSemiBold">KD {food.restaurants[0].price}</p>
             </div>
           </div>
         </div>
@@ -65,4 +72,4 @@ const ProductCard = ({ food }) => {
   );
 };
 
-export default ProductCard;
+export default ProductCardGrid;

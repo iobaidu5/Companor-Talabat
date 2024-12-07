@@ -1,75 +1,95 @@
 import Link from "next/link";
-import React from "react";
-// import { FaGlobe, FaBars } from "react-icons/fa";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
+  const dropdownRef = useRef(null);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false); // Close the dropdown if click is outside
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 500); // Wait for 500ms after the user stops typing
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (debouncedSearchQuery === '') return;
+
+    const fetchFoodItems = async () => {
+      try {
+
+        console.log("debouncedSearchQuery --> ", debouncedSearchQuery)
+        router.push(
+          `/food-details?searchedFood=${debouncedSearchQuery}`
+        );
+
+        return
+      } catch (error) {
+        console.error('Error fetching food items:', error);
+      }
+    };
+
+    fetchFoodItems();
+  }, [debouncedSearchQuery]);
+
   return (
     <nav className="bg-white shadow-md font-PoppinsSemiBold">
-      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-        {/* Left Side - Companor Name and Shop travel */}
-        <div className="flex items-center space-x-8">
-          {/* Companor Name */}
-          <Link href="/" className="flex items-center space-x-1">
-            {/* <span className="font-semibold text-lg text-gray-800">Companor</span> */}
-            <img src="./companor-logo.png" className="rounded-xl w-24" />
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Left - Logo */}
+        <div>
+          <Link href="/">
+            <img src="./companor-logo.png" alt="Logo" className="rounded-xl w-24" />
           </Link>
         </div>
 
-        {/* Right Side - Menu Items */}
-        <div className="flex items-center space-x-6 text-gray-800">
-          <button className="border border-gray-300 rounded-full px-3 py-1 text-sm text-blue-600 hover:bg-gray-100">
-            Get the app
-          </button>
+        {/* Center - Search Bar */}
+        <div className="flex flex-1 mx-4 justify-center">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search for food items..."
+          className="w-full max-w-lg h-12 p-3 text-sm border bg-gray-100 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+        />
 
-          {/* Language Selector */}
-          <div className="flex items-center space-x-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
-              />
-            </svg>
+        </div>
 
-            <span>English</span>
-          </div>
-
-          {/* Other Links */}
-          <a href="#" className="font-PoppinsSemiBold hover:text-blue-600">
-            Support
-          </a>
-          <a href="#" className="font-PoppinsSemiBold hover:text-blue-600">
-            Favorite Restaurants
-          </a>
-
-          {/* Sign In */}
-          <a
-            href="#"
-            className="flex items-center font-PoppinsSemiBold hover:text-blue-600"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-            <span className="ml-4">Sign in</span>
-          </a>
+        {/* Right - Buttons */}
+        <div className="flex items-center space-x-4">
+          <Link href="/login">
+            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+              Login
+            </button>
+          </Link>
+          <Link href="/signup">
+            <button className="px-4 py-2 text-sm font-medium text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-100">
+              Signup
+            </button>
+          </Link>
         </div>
       </div>
     </nav>

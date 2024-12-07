@@ -1,5 +1,5 @@
-// /pages/api/food-by-category.js
 import clientPromise from '../../lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 export default async function handler(req, res) {
   try {
@@ -27,7 +27,25 @@ export default async function handler(req, res) {
     const totalItems = await db.collection('fooditems').countDocuments({ category });
     const totalPages = Math.ceil(totalItems / limitNumber);
 
-    res.status(200).json({ foodItems, page: pageNumber, totalPages, totalItems });
+    const updatedFoodItems = await Promise.all(
+      foodItems.map(async (item) => {
+        const city = await db
+          .collection('cities')
+          .findOne({ _id: new ObjectId(item.city) });
+        const cityName = city ? city.cityName : 'Unknown';
+
+        const restaurant = await db.collection('restaurants').findOne({ _id: new ObjectId(item.restaurants[0]?.restaurantId) });
+        const restaurantName = restaurant ? restaurant.name : 'Unknown';
+
+        return {
+          ...item,
+          city: cityName,
+          restaurant: restaurantName,
+        };
+      })
+    );
+
+    res.status(200).json({ foodItems: updatedFoodItems, page: pageNumber, totalPages, totalItems });
   } catch (error) {
     console.error('Error fetching food items by category:', error);
     res.status(500).json({ error: 'Failed to fetch food items' });

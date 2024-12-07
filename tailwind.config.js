@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        customOrange: '#ff5a00',
       },
       fontFamily: {
         PoppinsBold: "PoppinsBold",

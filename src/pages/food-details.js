@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import ProductCard from "@/components/ProductCard";
 import AdBanner from "@/components/AdBanner";
+import Navbar from "@/components/Navbar";
+import Loading from "@/components/Loading";
 
 // export const products = [
 //   {
@@ -135,7 +137,7 @@ const FoodDetails = () => {
     if (cityId && restaurantId) {
       const fetchFoodItems = async () => {
         try {
-          const response = await axios.get(`/api/fooditems?cityId=${cityId}&restaurantId=${restaurantId}`,{
+          const response = await axios.get(`/api/fooditems?cityId=${cityId}&restaurantId=${restaurantId}`, {
             params: {
               page: currentPage,
               limit: itemsPerPage,
@@ -227,7 +229,7 @@ const FoodDetails = () => {
             const [min, max] = filter.priceRange.split("-").map(Number);
             const price = parseFloat(
               item.restaurants[0]?.price || "0"
-            ); /* Assuming first restaurant's price */
+            );
             if (price < min || price > max) {
               isMatch = false;
             }
@@ -285,44 +287,16 @@ const FoodDetails = () => {
     setPageGroupStart(Math.max(pageGroupStart - paginationGroupSize, 1));
   };
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     setLoading(true);
-
-  //     const newImageSrcs = {};
-
-  //     for (const hotel of foodItems) {
-  //       let activeImage = hotel.image[activeImageIndex[hotel._id]] || hotel.image;
-
-  //       if (activeImage === "/assets/images/img-placeholder.svg") {
-  //         const imageSrc = await fetchImage(hotel.restaurants[0].link, hotel.itemName);
-  //         newImageSrcs[hotel._id] = imageSrc;
-  //       } else {
-  //         newImageSrcs[hotel._id] = activeImage;
-  //       }
-  //     }
-
-  //     setImageSrcs(newImageSrcs);
-  //     setLoading(false);
-  //   };
-
-  //   fetchImages();
-  // }, [foodItems, activeImageIndex]);
-
-  // if (loading) {
-  //   return <div>Loading...</div>; // Show loading message while fetching images
-  // }
-
   return (
     <>
-      <Header />
+      <Navbar />
       <main className="container-fluid section p-6">
         <SearchForm />
         <div className="flex mt-4">
           <div className="w-[20%]">
             <Filters />
           </div>
-          <div className="w-[70%] mx-4 relative">
+          {loading ? <Loading /> : <div className="w-[70%] mx-4 relative">
             {/* <div className="bg-[#1f254f] text-white p-4 rounded-lg flex justify-between items-center w-full mx-auto mt-8">
               <div className="flex items-center space-x-2">
                 <img src="/flower.png" className="w-20" />
@@ -336,7 +310,7 @@ const FoodDetails = () => {
                 </button>
               </div>
             </div> */}
-            <div className="bg-gray-200">
+            <div className="bg-gray-200 mb-3">
               <AdBanner
                 dataAdSlot="3228536862"
                 dataAdFormat="auto"
@@ -349,7 +323,7 @@ const FoodDetails = () => {
                 <ProductCard key={index} food={food} />
               ))}
             </div>
-          
+
             <div className="flex justify-center items-center space-x-2 mt-6">
               {pageGroupStart > 1 && (
                 <button
@@ -372,11 +346,10 @@ const FoodDetails = () => {
                     key={page}
                     onClick={() => handlePageChange(page)}
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors 
-                ${
-                  page === currentPage
-                    ? "bg-blue-500 text-white cursor-default"
-                    : "bg-gray-200 text-gray-700 hover:bg-blue-100"
-                }`}
+                ${page === currentPage
+                        ? "bg-blue-500 text-white cursor-default"
+                        : "bg-gray-200 text-gray-700 hover:bg-blue-100"
+                      }`}
                     disabled={page === currentPage}
                   >
                     {page}
@@ -394,8 +367,8 @@ const FoodDetails = () => {
                 </button>
               )}
             </div>
-          </div>
-          <div className="w-[10%] bg-gray-200 relative">
+          </div>}
+          <div className="w-[10%] bg-gray-200 relative mt-2">
             <AdBanner
               dataAdSlot="2953204693"
               dataAdFormat="auto"
