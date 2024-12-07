@@ -122,7 +122,7 @@ const Navbar = () => {
               </div>
             </Link>
             <Link href="/profile">
-              <NavCard className="ring-2 ring-light-gray flex justify-center items-center ring-offset-2 overflow-hidden hover:ring-2 hover:ring-primary-indigo-hover">
+              <NavCard className="flex justify-center items-center ring-offset-2 overflow-hidden hover:ring-2 hover:ring-primary-indigo-hover">
                 <Image
                   src={"/user.png"}
                   alt={"Profile Picture"}
