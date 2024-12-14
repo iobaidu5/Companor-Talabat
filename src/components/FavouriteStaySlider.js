@@ -1,4 +1,5 @@
-// components/FavoriteStaySlider.js
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import axios from "axios";
@@ -28,9 +29,7 @@ const FavoriteStaySlider = () => {
   const [categories, setCategories] = useState([]);
   const router = useRouter();
   const [images, setImages] = useState([]);
-const UNSPLASH_API_KEY = `jGkVtgj9GYUVelgemeyenk6zOXIjDhyucPvnGsHvmm4`;
-
-console.log("UNSPLASH_API_KEY -> ", UNSPLASH_API_KEY)
+  const UNSPLASH_API_KEY = `${process.env.NEXT_PUBLIC_PUBLISHER_ID}`;
 
   const fetchCategories = async () => {
     try {
@@ -69,7 +68,7 @@ console.log("UNSPLASH_API_KEY -> ", UNSPLASH_API_KEY)
       return "/placeholder-image.jpg";
     }
   };
-  
+
 
   const fetchImages = async () => {
     const localImages = JSON.parse(localStorage.getItem("categorySliderImages")) || {};
@@ -79,12 +78,12 @@ console.log("UNSPLASH_API_KEY -> ", UNSPLASH_API_KEY)
       categories.map(async (category) => {
         if (localImages[category.title]) {
           return localImages[category.title];
-        } 
-        // else {
-        //   const image = await fetchUnsplashImages(category.title);
-        //   updatedImages[category.title] = image;
-        //   return image;
-        // }
+        }
+        else {
+          const image = await fetchUnsplashImages(category.title);
+          updatedImages[category.title] = image;
+          return image;
+        }
       })
     );
 
@@ -156,28 +155,28 @@ console.log("UNSPLASH_API_KEY -> ", UNSPLASH_API_KEY)
         Discover your new favorite foods
       </h2>
       <Slider {...settings}>
-      {categories?.map((category, index) => (
-        <div key={index} className="px-2" onClick={handleCategoryClick}>
-          <div
-            style={{
-              backgroundImage: `url('${images[index]}')`,
-            }}
-            className="rounded-lg overflow-hidden shadow-md w-full h-96 bg-cover bg-center relative"
-            onClick={() => console.log("Category clicked:", category)}
-          >
-            <p className="text-center font-bold text-[1.2rem] py-2 absolute bottom-0 left-0 ml-2 text-white bg-black bg-opacity-50 px-4 rounded">
-              {category.title}
-            </p>
+        {categories?.map((category, index) => (
+          <div key={index} className="px-2" onClick={handleCategoryClick}>
+            <div
+              style={{
+                backgroundImage: `url('${images[index]}')`,
+              }}
+              className="rounded-lg overflow-hidden shadow-md w-full h-96 bg-cover bg-center relative"
+              onClick={() => console.log("Category clicked:", category)}
+            >
+              <p className="text-center font-bold text-[1.2rem] py-2 absolute bottom-0 left-0 ml-2 text-white bg-black bg-opacity-50 px-4 rounded">
+                {category.title}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
-    </Slider>
+        ))}
+      </Slider>
       <div className="bg-gray-200 mt-5">
-      <AdBanner
-        dataAdSlot="1630442794"
-        dataAdFormat="auto"
-        dataFullWidthResponsive={true}
-      />
+        <AdBanner
+          dataAdSlot="1630442794"
+          dataAdFormat="auto"
+          dataFullWidthResponsive={true}
+        />
       </div>
     </section>
   );
