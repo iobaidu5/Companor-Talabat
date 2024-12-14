@@ -10,7 +10,7 @@ const Profile = () => {
       <>
       <Navbar />
       <form className="p-6 md:p-10 mt-5 max-w-7xl mx-auto">
-            <h3 className="text-xl font-semibold p-2 mx-3 text-center">Profile</h3>
+            <h3 className="text-xl font-semibold p-2 mx-3 text-left">Profile</h3>
 
             <div className="flex flex-col overflow-hidden rounded-3xl border-2 my-5 border-light-gray shadow-lg">
                 <div className="flex flex-col mx-5">

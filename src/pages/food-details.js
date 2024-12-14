@@ -75,9 +75,21 @@ const FoodDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState({});
   const [isAnimating, setIsAnimating] = useState({});
   const [direction, setDirection] = useState({});
+  const [filters, setFilters] = useState({
+    category: "",
+    city: "",
+    restaurant: "",
+    priceRange: "",
+    topPicks: false,
+  });
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [appliedFilter, setAppliedFilter] = useState({});
+
 
   const router = useRouter();
   const { cityId, restaurantId, category, foodByCity, searchedFood, filter, foodByCityName } = router.query;
+
+
 
   const [foodItems, setFoodItems] = useState([]);
 
@@ -111,11 +123,34 @@ const FoodDetails = () => {
         return { ...prev, [id]: newIndex };
       });
       setIsAnimating((prev) => ({ ...prev, [id]: false }));
-    }, 400); // Animation duration (300ms)
+    }, 400);
   };
 
+
+  const updateFilters = () => {
+    try {
+      console.log("Updating filters:", filters);
+  
+      setAppliedFilter({
+        category: filters.category || "",
+        city: filters.city || "",
+        restaurant: filters.restaurant || "",
+      });
+  
+      fetchFilteredFoodItems(); // Reapply filters
+    } catch (error) {
+      console.error("Error updating filters:", error);
+    }
+  };
+  
+
+  // Listen for route/query changes
+  useEffect(() => {
+    if(filters)
+    updateFilters();
+  }, [filters]);
+
   const fetchImage = async (link, itemName) => {
-    console.log("getting image from api");
     try {
       const response = fetch(
         `/api/scrape-image?link=${link}&itemName=${itemName}`
@@ -145,6 +180,7 @@ const FoodDetails = () => {
           });
 
           setFoodItems(response.data.foodItems);
+          setFilteredItems(response.data.foodItems);
           setTotalPages(response.data.totalPages);
           setLoading(false);
         } catch (error) {
@@ -166,6 +202,7 @@ const FoodDetails = () => {
             params: { category },
           });
           setFoodItems(response.data.foodItems);
+          setFilteredItems(response.data.foodItems);
           setLoading(false);
         } catch (error) {
           console.error("Error fetching food items by category:", error);
@@ -190,6 +227,7 @@ const FoodDetails = () => {
           });
 
           setFoodItems(response.data.foodItems);
+          setFilteredItems(response.data.foodItems);
           setTotalPages(response.data.totalPages);
           setLoading(false);
         } catch (error) {
@@ -203,51 +241,36 @@ const FoodDetails = () => {
   }, [searchedFood]);
 
   useEffect(() => {
-    if (filter) {
-      const handleFilterChange = () => {
-        const filteredData = foodItems.filter((item) => {
-          let isMatch = true;
+    if (appliedFilter) {
+      console.log("Current Filter:", appliedFilter);
 
-          if (filter.category && item.category !== filter.category) {
-            isMatch = false;
-          }
+      const filteredData = filteredItems.filter((item) => {
+        let isMatch = true;
 
-          if (filter.city && item.city && item.city.$oid !== filter.city) {
-            isMatch = false;
-          }
+        if (appliedFilter.category && item.category !== appliedFilter.category) {
+          isMatch = false;
+        }
 
-          if (
-            filter.restaurant &&
-            !item.restaurants.some(
-              (restaurant) => restaurant.restaurantId.$oid === filter.restaurant
-            )
-          ) {
-            isMatch = false;
-          }
+        if (appliedFilter.city && item.city && item.city.$oid !== appliedFilter.city) {
+          isMatch = false;
+        }
 
-          if (filter.priceRange) {
-            const [min, max] = filter.priceRange.split("-").map(Number);
-            const price = parseFloat(
-              item.restaurants[0]?.price || "0"
-            );
-            if (price < min || price > max) {
-              isMatch = false;
-            }
-          }
+        if (
+          appliedFilter.restaurant &&
+          !item.restaurants.some(
+            (restaurant) =>
+              restaurant.restaurantId.$oid === appliedFilter.restaurant
+          )
+        ) {
+          isMatch = false;
+        }
 
-          if (filter.topPicks && item.category !== "Picks for you 🔥") {
-            isMatch = false;
-          }
+        return isMatch;
+      });
 
-          return isMatch;
-        });
-
-        setFoodItems(filteredData);
-      };
-
-      handleFilterChange(0);
+      setFilteredItems(filteredData);
     }
-  }, [filter]);
+  }, [appliedFilter]);
 
   useEffect(() => {
     const fetchFoodItems = async () => {
@@ -286,6 +309,7 @@ const FoodDetails = () => {
           params: { cityName: foodByCityName, page: currentPage, limit: itemsPerPage },
         });
         setFoodItems(response.data.foodItems);
+        setFilteredItems(response.data.foodItems);
         setTotalPages(response.data.totalPages);
         setLoading(false);
 
@@ -318,6 +342,51 @@ const FoodDetails = () => {
     setPageGroupStart(Math.max(pageGroupStart - paginationGroupSize, 1));
   };
 
+
+  const fetchFilteredFoodItems = () => {
+    setLoading(true);
+  
+    const filteredItemsss = foodItems.filter((item) => {
+      let matchesCategory = true;
+      let matchesCity = true;
+      let matchesRestaurant = true;
+  
+      // Apply category filter if selected
+      if (filters.category) {
+        matchesCategory = item.category === filters.category;
+      }
+  
+      // Apply city filter if selected
+      if (filters.city) {
+        matchesCity = item.city.name === filters.city;
+      }
+  
+      // Apply restaurant filter if selected
+      if (filters.restaurant) {
+        matchesRestaurant = item.restaurants.some(
+          (restaurant) => restaurant.restaurantTitle === filters.restaurant
+        );
+      }
+  
+      // Include item only if it matches all selected filters
+      return matchesCategory && matchesCity && matchesRestaurant;
+    });
+  
+    console.log("Filtered items ->", filteredItemsss);
+    setFilteredItems(filteredItemsss);
+    setLoading(false);
+  };
+  
+
+
+  useEffect(() => {
+    if (filters) {
+      fetchFilteredFoodItems();
+    }
+  }, [filters, foodItems]); // Ensure foodItems dependency is included
+  
+
+
   return (
     <>
       <Navbar />
@@ -325,22 +394,9 @@ const FoodDetails = () => {
         <SearchForm />
         <div className="flex mt-4">
           <div className="w-[20%]">
-            <Filters />
+            <Filters filters={filters} setFilters={setFilters} />
           </div>
           {loading ? <Loading /> : <div className="w-[70%] mx-4 relative">
-            {/* <div className="bg-[#1f254f] text-white p-4 rounded-lg flex justify-between items-center w-full mx-auto mt-8">
-              <div className="flex items-center space-x-2">
-                <img src="/flower.png" className="w-20" />
-                <p className="font-bold">
-                  You all always get our best prices when you are signed in!
-                </p>
-              </div>
-              <div className="flex items-center space-x-4">
-                <button className="bg-[#0071eb] text-white font-semibold px-4 py-1 rounded-full">
-                  Sign in
-                </button>
-              </div>
-            </div> */}
             <div className="bg-gray-200 mb-3">
               <AdBanner
                 dataAdSlot="3228536862"
@@ -350,8 +406,10 @@ const FoodDetails = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4">
-              {foodItems.length > 0 ? (
-                foodItems.map((food, index) => (
+              {loading ? (
+                <div className="text-center text-gray-500 font-medium">Loading...</div> // Show loading while fetching data
+              ) : filteredItems.length > 0 ? (
+                filteredItems.map((food, index) => (
                   <ProductCard key={index} food={food} />
                 ))
               ) : (

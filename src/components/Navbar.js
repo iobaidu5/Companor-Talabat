@@ -59,7 +59,7 @@ const Navbar = () => {
   }, [debouncedSearchQuery]);
 
   return (
-    <nav className="bg-white shadow-md p-4 px-4 lg:px-44 md:px-10 sm:px-8">
+    <nav className="bg-white shadow-md p-4 px-0 lg:px-14 md:px-10 sm:px-8">
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           {/* Left - Logo */}

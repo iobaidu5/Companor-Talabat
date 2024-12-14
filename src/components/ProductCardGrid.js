@@ -16,7 +16,7 @@ const ProductCardGrid = ({ food }) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <div className="border border-gray-200 rounded-lg shadow-md flex flex-col overflow-hidden w-full cursor-pointer">
+      <div className="border border-gray-200 rounded-lg shadow-md flex flex-col overflow-hidden w-full cursor-pointer h-full">
         {/* Image Section */}
         <div className="h-56 w-full">
           <img

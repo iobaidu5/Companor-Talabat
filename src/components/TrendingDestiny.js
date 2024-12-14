@@ -42,6 +42,7 @@ const TrendingDestiny = () => {
 
   const [cities, setCities] = useState([]);
   const router = useRouter();
+  const [images, setImages] = useState([]);
 
   const settings = {
     dots: false,
@@ -49,8 +50,10 @@ const TrendingDestiny = () => {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 2,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    // nextArrow: <NextArrow />,
+    // prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -89,6 +92,50 @@ const TrendingDestiny = () => {
     fetchCategories();
   }, []);
 
+  const fetchUnsplashImages = async (cityName) => {
+    const query = `${cityName}, Kuwait`; // More specific query for Kuwaiti cities
+    const response = await axios.get(
+      `https://api.unsplash.com/search/photos`,
+      {
+        params: {
+          query,
+          per_page: 1,
+          orientation: "landscape",
+        },
+        headers: {
+          Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
+        },
+      }
+    );
+    return response.data.results[0]?.urls?.regular || "";
+  };
+
+  const fetchImages = async () => {
+    const localImages = JSON.parse(localStorage.getItem("cityImages")) || {};
+    const updatedImages = { ...localImages };
+
+    const fetchedImages = await Promise.all(
+      cities.map(async (city) => {
+        if (localImages[city.cityName]) {
+          return localImages[city.cityName];
+        } else {
+          const image = await fetchUnsplashImages(city.cityName);
+          updatedImages[city.cityName] = image; // Store new image in local object
+          return image;
+        }
+      })
+    );
+
+    setImages(fetchedImages);
+
+    // Save updated images to localStorage
+    localStorage.setItem("cityImages", JSON.stringify(updatedImages));
+  };
+
+  useEffect(() => {
+    fetchImages();
+  }, [cities]);
+
 
 
   const handleCityClick = (cityId) => {
@@ -99,23 +146,23 @@ const TrendingDestiny = () => {
     <section className="my-8">
       <h2 className="text-2xl font-bold mb-4">Discover our trending foods around you</h2>
       <Slider {...settings}>
-        {cities.map((city, index) => (
-          <div key={index} className="p-2">
-            <div className="rounded-lg overflow-hidden border bg-white shadow-md">
-              <img
-                src={trendingDestinations[index].image}
-                alt={`${city.city} - ${city.country}`}
-                className="h-72 w-full object-cover"
-                onClick={() => handleCityClick(city._id)}
-              />
-              <div className="p-2">
-                <p className="font-bold text-[1.2rem]">{city.cityName}</p>
-                <p>{city.country}</p>
-              </div>
+      {cities.map((city, index) => (
+        <div key={index} className="p-2" onClick={handleCityClick}>
+          <div className="rounded-lg overflow-hidden border bg-white shadow-md">
+            <img
+              src={trendingDestinations[index].image} // Use fetched image
+              alt={`${city.cityName} - ${city.country}`}
+              className="h-72 w-full object-cover"
+              onClick={() => console.log("City clicked:", city._id)}
+            />
+            <div className="p-2">
+              <p className="font-bold text-[1.2rem]">{city.cityName}</p>
+              <p>{city.country}</p>
             </div>
           </div>
-        ))}
-      </Slider>
+        </div>
+      ))}
+    </Slider>
     </section>
   );
 };
