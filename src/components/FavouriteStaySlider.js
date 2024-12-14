@@ -156,7 +156,7 @@ const FavoriteStaySlider = () => {
       </h2>
       <Slider {...settings}>
         {categories?.map((category, index) => (
-          <div key={index} className="px-2" onClick={handleCategoryClick}>
+          <div key={index} className="px-2" onClick={() => handleCategoryClick(category)}>
             <div
               style={{
                 backgroundImage: `url('${images[index]}')`,

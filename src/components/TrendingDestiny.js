@@ -147,7 +147,7 @@ const TrendingDestiny = () => {
       <h2 className="text-2xl font-bold mb-4">Discover our trending foods around you</h2>
       <Slider {...settings}>
       {cities.map((city, index) => (
-        <div key={index} className="p-2" onClick={handleCityClick}>
+        <div key={index} className="p-2" onClick={() => handleCityClick(city._id)}>
           <div className="rounded-lg overflow-hidden border bg-white shadow-md">
             <img
               src={trendingDestinations[index].image} // Use fetched image
