@@ -1,5 +1,4 @@
-"use client";
-
+// components/FavoriteStaySlider.js
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import axios from "axios";
@@ -28,9 +27,6 @@ const favoriteStays = [
 const FavoriteStaySlider = () => {
   const [categories, setCategories] = useState([]);
   const router = useRouter();
-  const [images, setImages] = useState([]);
-  const UNSPLASH_API_KEY = `${process.env.NEXT_PUBLIC_PUBLISHER_ID}`;
-
   const fetchCategories = async () => {
     try {
       const response = await axios.get("/api/categories");
@@ -44,57 +40,6 @@ const FavoriteStaySlider = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
-
-  const fetchUnsplashImages = async (categoryTitle) => {
-    try {
-      const query = `food ${categoryTitle}`; // Add descriptive keywords
-      const response = await axios.get(
-        `https://api.unsplash.com/search/photos`,
-        {
-          params: {
-            query,
-            per_page: 1,
-            orientation: "landscape",
-          },
-          headers: {
-            Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
-          },
-        }
-      );
-      return response.data.results[0]?.urls?.regular || "";
-    } catch (error) {
-      console.error(`Error fetching image for category "${categoryTitle}":`, error);
-      return "/placeholder-image.jpg";
-    }
-  };
-
-
-  const fetchImages = async () => {
-    const localImages = JSON.parse(localStorage.getItem("categorySliderImages")) || {};
-    const updatedImages = { ...localImages };
-
-    const fetchedImages = await Promise.all(
-      categories.map(async (category) => {
-        if (localImages[category.title]) {
-          return localImages[category.title];
-        }
-        else {
-          const image = await fetchUnsplashImages(category.title);
-          updatedImages[category.title] = image;
-          return image;
-        }
-      })
-    );
-
-    setImages(fetchedImages);
-
-    localStorage.setItem("categorySliderImages", JSON.stringify(updatedImages));
-  };
-
-  useEffect(() => {
-    fetchImages();
-  }, [categories]);
 
   const handleCategoryClick = (category) => {
     router.push(`/food-details?category=${encodeURIComponent(category.title)}`);
@@ -123,10 +68,8 @@ const FavoriteStaySlider = () => {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    // nextArrow: <NextArrow />,
-    // prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -156,15 +99,15 @@ const FavoriteStaySlider = () => {
       </h2>
       <Slider {...settings}>
         {categories?.map((category, index) => (
-          <div key={index} className="px-2" onClick={() => handleCategoryClick(category)}>
+          <div key={index} className="px-2">
             <div
               style={{
-                backgroundImage: `url('${images[index]}')`,
+                backgroundImage: `url('${favoriteStays[index].image}')`,
               }}
               className="rounded-lg overflow-hidden shadow-md w-full h-96 bg-cover bg-center relative"
-              onClick={() => console.log("Category clicked:", category)}
+              onClick={() => handleCategoryClick(category)}
             >
-              <p className="text-center font-bold text-[1.2rem] py-2 absolute bottom-0 left-0 ml-2 text-white bg-black bg-opacity-50 px-4 rounded">
+              <p className="text-center font-bold text-[1.2rem] py-2 absolute bottom-0 left-0 ml-2 text-white">
                 {category.title}
               </p>
             </div>
@@ -172,11 +115,11 @@ const FavoriteStaySlider = () => {
         ))}
       </Slider>
       <div className="bg-gray-200 mt-5">
-        <AdBanner
-          dataAdSlot="1630442794"
-          dataAdFormat="auto"
-          dataFullWidthResponsive={true}
-        />
+      <AdBanner
+        dataAdSlot="1630442794"
+        dataAdFormat="auto"
+        dataFullWidthResponsive={true}
+      />
       </div>
     </section>
   );

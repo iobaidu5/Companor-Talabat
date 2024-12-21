@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 let client;
 let clientPromise;
 
-const uri = "mongodb+srv://obaidkhan:companor123@cluster0.fvgsu.mongodb.net/scrapped?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGODB_URI;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

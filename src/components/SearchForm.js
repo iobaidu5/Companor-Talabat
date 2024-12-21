@@ -137,7 +137,6 @@ const SearchForm = () => {
         "Abu Ftaira",
         "West Abu Fetera Small Indust",
         "Al Masayel",
-        "Murouj",
         "Messila",
         "Al-Qurain",
         "Fnaitess",

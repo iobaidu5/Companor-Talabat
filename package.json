@@ -1,5 +1,6 @@
 {
-  "name": "flight-app",
+  "name": "companor",
+  "description": "Companor application",
   "version": "0.1.0",
   "private": true,
   "scripts": {
