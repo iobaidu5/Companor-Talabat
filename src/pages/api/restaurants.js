@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 export default async function handler(req, res) {
   const client = await clientPromise;
-  const db = client.db('scrapped');
+  const db = client.db('companor');
 
   const { cityId } = req.query;
   console.log("cityId -: ", cityId);

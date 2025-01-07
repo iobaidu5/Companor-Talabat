@@ -1,0 +1,9 @@
+FROM mongo:latest
+
+ENV MONGO_INITDB_ROOT_USERNAME=mongoadmin
+ENV MONGO_INITDB_ROOT_PASSWORD=c0mpan0r123
+ENV MONGO_INITDB_DATABASE=companor
+
+EXPOSE 27017
+
+COPY ./init-mongo.js /docker-entrypoint-initdb.d/

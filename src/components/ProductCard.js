@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 
 const ProductCard = ({ food }) => {
@@ -9,6 +9,8 @@ const ProductCard = ({ food }) => {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+
+  const [isHovered, setIsHovered] = useState(false);
 
 
   return (

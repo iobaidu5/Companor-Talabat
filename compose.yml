@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
+  mongo:
+    image: iobaidu5/mongodb-companor
+    ports:
+      - 27017:27017
+    volumes:
+      - companor:/data/db
+
+volumes:
+  companor:

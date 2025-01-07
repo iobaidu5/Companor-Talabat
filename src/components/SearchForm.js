@@ -244,21 +244,25 @@ const SearchForm = () => {
             <Select
               options={cities.map((city) => ({
                 value: city._id,
-                label: city.cityName,
+                label: city.cityName
+                  .replace(/-/g, ' ')
+                  .split(' ')
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' '),
               }))}
               styles={{
                 control: (provided) => ({
                   ...provided,
                   height: '48px',
                   borderRadius: '8px',
-                  borderColor: '#cbd5e0', // Gray-300
+                  borderColor: '#cbd5e0',
                   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                  '&:hover': { borderColor: '#4299e1' }, // Blue-500 on hover
+                  '&:hover': { borderColor: '#4299e1' },
                   borderWidth: '2px',
                 }),
                 placeholder: (provided) => ({
                   ...provided,
-                  color: '#a0aec0', // Gray-400
+                  color: '#a0aec0',
                 }),
               }}
               value={selectedCity}
@@ -277,7 +281,11 @@ const SearchForm = () => {
             <Select
               options={restaurants.map((restaurant) => ({
                 value: restaurant._id,
-                label: restaurant.name,
+                label: restaurant.name
+                  .replace(/-/g, ' ')
+                  .split(' ')
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' '),
               }))}
               styles={{
                 control: (provided) => ({

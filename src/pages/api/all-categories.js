@@ -3,7 +3,7 @@ import clientPromise from '../../lib/mongodb';
 export default async function handler(req, res) {
   try {
     const client = await clientPromise;
-    const db = client.db('scrapped');
+    const db = client.db('companor');
 
     const categories = await db.collection('fooditems').distinct('category');
 

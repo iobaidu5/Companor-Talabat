@@ -87,9 +87,9 @@ const FoodDetails = () => {
 
 
   const router = useRouter();
-  const { cityId, restaurantId, category, foodByCity, searchedFood, filter, foodByCityName } = router.query;
+  const { cityId, restaurantId, category, foodByCity, searchedFood, filter, foodByCityName, foodByRestaurantName  } = router.query;
 
-
+console.log("router.query-------------------------------", router.query.foodByCityName)
 
   const [foodItems, setFoodItems] = useState([]);
 
@@ -272,34 +272,38 @@ const FoodDetails = () => {
     }
   }, [appliedFilter]);
 
-  useEffect(() => {
-    const fetchFoodItems = async () => {
-      try {
-        if (foodByCityName) {
-          const response = await axios.get("/api/food-items-by-city", {
-            params: { cityName: foodByCityName, page: currentPage, limit: itemsPerPage },
-          });
-          setFoodItems(response.data.foodItems);
-          setTotalPages(response.data.totalPages);
-          setLoading(false);
-        } else {
-          const response = await axios.get("/api/food-items-by-city", {
-            params: { foodByCity, page: currentPage, limit: itemsPerPage },
-          });
-          setFoodItems(response.data.foodItems);
-          setTotalPages(response.data.totalPages);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching food items:", error);
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchFoodItems = async () => {
+  //     try {
+  //       if (foodByCityName) {
+  //         const response = await axios.get("/api/food-items-by-city", {
+  //           params: { 
+  //             cityName: foodByCityName.toLowerCase().replace(/ /g, '-'),
+  //             page: currentPage, 
+  //             limit: itemsPerPage 
+  //           },
+  //         });
+  //         setFoodItems(response.data.foodItems);
+  //         setTotalPages(response.data.totalPages);
+  //         setLoading(false);
+  //       } else {
+  //         const response = await axios.get("/api/food-items-by-city", {
+  //           params: { foodByCity, page: currentPage, limit: itemsPerPage },
+  //         });
+  //         setFoodItems(response.data.foodItems);
+  //         setTotalPages(response.data.totalPages);
+  //         setLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching food items:", error);
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (foodByCity || foodByCityName) {
-      fetchFoodItems();
-    }
-  }, [foodByCity, currentPage, foodByCityName]);
+  //   if (foodByCity || foodByCityName) {
+  //     fetchFoodItems();
+  //   }
+  // }, [foodByCity, currentPage, foodByCityName]);
 
 
   useEffect(() => {
@@ -308,6 +312,7 @@ const FoodDetails = () => {
         const response = await axios.get("/api/food-items-by-cityname", {
           params: { cityName: foodByCityName, page: currentPage, limit: itemsPerPage },
         });
+        console.log("respinse data -> fetchFoodItems", response.data)
         setFoodItems(response.data.foodItems);
         setFilteredItems(response.data.foodItems);
         setTotalPages(response.data.totalPages);
@@ -323,6 +328,29 @@ const FoodDetails = () => {
       fetchFoodItems();
     }
   }, [currentPage, foodByCityName]);
+
+
+  useEffect(() => {
+    const fetchFoodItems = async () => {
+      try {
+        const response = await axios.get("/api/food-items-by-restaurant", {
+          params: { foodByRestaurantName: foodByRestaurantName, page: currentPage, limit: itemsPerPage },
+        });
+        setFoodItems(response.data.foodItems);
+        setFilteredItems(response.data.foodItems);
+        setTotalPages(response.data.totalPages);
+        setLoading(false);
+
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+        setLoading(false);
+      }
+    };
+
+    if (foodByRestaurantName) {
+      fetchFoodItems();
+    }
+  }, [currentPage, foodByRestaurantName]);
 
   const handlePageChange = (page) => {
     console.log("page ", page)
@@ -371,8 +399,7 @@ const FoodDetails = () => {
       // Include item only if it matches all selected filters
       return matchesCategory && matchesCity && matchesRestaurant;
     });
-  
-    console.log("Filtered items ->", filteredItemsss);
+
     setFilteredItems(filteredItemsss);
     setLoading(false);
   };
@@ -386,6 +413,7 @@ const FoodDetails = () => {
   }, [filters, foodItems]); // Ensure foodItems dependency is included
   
 
+  console.log("Filtered items ->", filteredItems);
 
   return (
     <>

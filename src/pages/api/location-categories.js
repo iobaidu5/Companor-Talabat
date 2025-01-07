@@ -2,7 +2,7 @@ import clientPromise from '../../lib/mongodb';
 
 export default async function handler(req, res) {
   const client = await clientPromise;
-  const db = client.db('scrapped');
+  const db = client.db('companor');
 
   try {
     // Fetch the names and IDs of up to 10 cities

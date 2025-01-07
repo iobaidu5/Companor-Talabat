@@ -148,6 +148,10 @@ export default function ProductDetails() {
     }
   }, [category]);
 
+  const handleFoodByRestaurantName = (e) => {
+    router.push(`/food-details?foodByRestaurantName=${e}`);
+  };
+
 
 
 
@@ -208,167 +212,165 @@ export default function ProductDetails() {
         <SearchForm />
         <div className="p-6 space-y-8">
           {/* Header Section */}
-          {loading ? <Loading /> : <div className="flex justify-between items-center mb-2">
-            <a
-              href="#"
-              className="text-customOrange text-sm font-medium flex items-center space-x-2 transition-all hover:text-customOrange hover:no-underline"
-              onClick={(e) => {
-                e.preventDefault();
-                router.back();
-              }}
-            >
-              <span className="text-lg font-bold">&lt;</span>
-              <span>See all Foods</span>
-            </a>
-            <div className="flex space-x-4">
-              <button className="flex items-center space-x-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2h-6a2 2 0 01-2-2v-4"
-                  />
-                </svg>
-                <span>Share</span>
-              </button>
-              <button className="flex items-center space-x-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 15l7-7 7 7"
-                  />
-                </svg>
-                <span>Save</span>
-              </button>
+          {loading ? (
+            <Loading />
+          ) : (
+            <div className="flex justify-between items-center mb-4">
+              <a
+                href="#"
+                className="text-customOrange text-sm font-medium flex items-center space-x-2 transition-all hover:text-customOrange hover:no-underline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.back();
+                }}
+              >
+                <span className="text-lg font-bold">&lt;</span>
+                <span>See all Foods</span>
+              </a>
+              <div className="flex space-x-4">
+                <button className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2h-6a2 2 0 01-2-2v-4"
+                    />
+                  </svg>
+                  <span>Share</span>
+                </button>
+                <button className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 15l7-7 7 7"
+                    />
+                  </svg>
+                  <span>Save</span>
+                </button>
+              </div>
             </div>
-          </div>}
+          )}
 
-          {loading ? <Loading /> :
-            <Link
-              href={`${foodItems.restaurants[0].link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div className="flex flex-col md:flex-row gap-6 p-2 border border-gray-200 rounded-lg shadow-md cursor-pointer">
-                <div className="md:w-1/2 h-[22.5rem]">
+          {/* Food Item Detail Section */}
+          {loading ? (
+            <Loading />
+          ) : (
+            <Link href={`${foodItems.restaurants[0].link}`} target="_blank" rel="noopener noreferrer">
+              <div className="relative flex flex-col md:flex-row gap-6 p-6 border border-gray-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-all">
+                {/* Left Section: Image */}
+                <div className="h-[20rem]">
                   <img
                     src={foodItems.image}
                     className="h-full w-full object-cover rounded-lg"
                     alt={foodItems.itemName}
                   />
                 </div>
-                <div className="md:w-1/2 flex flex-col md:flex-row justify-between gap-6 relative">
-                  <div className="flex flex-col py-5 justify-between w-full md:w-1/2">
-                    <div>
-                      <h1 className="text-3xl font-PoppinsBold" style={{ lineHeight: "1.4" }}>{foodItems.itemName}</h1>
-                      <p className="text-sm mt-2">{foodItems.description}</p>
-                      <div>
-                        <p className="text-sm mt-2 text-left py-2">{foodItems.category}</p>
+
+                {/* Right Section: Data */}
+                <div className="md:w-md grid grid-cols-12 gap-6 p-2 rounded-lg cursor-pointer">
+                  <div className="col-span-12 justify-between">
+                    <div className="flex flex-col justify-between gap-1 absolute top-3 right-3">
+                      <div className="flex flex-col">
+                        {/* City */}
+                        <p className="text-gray-600 text-sm text-right mb-3">
+                          <span className="mr-1">📍</span>{formatCityName(foodItems.city)}
+                        </p>
                       </div>
                     </div>
-                    <div>
-                      <div className="text-gray-900 font-medium">
-                        Label Minimum Order Amount: {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.labelMinimumOrderAmount : "0.00"}
-                      </div>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{foodItems.itemName}</h1>
+                    <p className="text-sm text-gray-700 mb-2">{foodItems.description}</p>
+
+                    {/* Category */}
+                    <p className="text-sm text-gray-600 py-2 mb-2">{foodItems.category}</p>
+
+                    {/* Minimum Order Amount */}
+                    <div className="text-gray-900 font-medium">
+                      Label Minimum Order Amount: <strong>{foodItems?.info?.[0]?.labelMinimumOrderAmount || "0.00"}</strong>
                     </div>
-                    <div>
-                      <p className="text-gray-900 text-sm mt-2">
-                        {foodItems?.info && foodItems?.info[0]?.cuisines || "Cuisines"}
-                      </p>
-                    </div>
+                  </div>
+                  <div className="col-span-6 flex flex-col justify-between">
+                    <p className="text-gray-900 text-sm mt-2">
+                      {foodItems?.info?.[0]?.cuisines || "Cuisines"}
+                    </p>
+
+                    {/* Rating & Icon */}
                     <div className="flex items-center space-x-4">
                       <div className="bg-green-300 text-white font-semibold text-sm rounded-md px-3 py-1">
-                        {foodItems?.info && foodItems?.info[0]?.icon != "none" ? foodItems?.info[0]?.icon : "☺️"}
+                        {foodItems?.info?.[0]?.icon || "☺️"}
                       </div>
                       <p className="text-gray-900 font-medium">
-                        {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.rating : "Very Good"}
+                        {foodItems?.info?.[0]?.rating || "Very Good"}
                       </p>
                       <p className="text-gray-500 text-sm">{foodItems.reviews}</p>
                     </div>
                   </div>
-                  <div className="w-full md:w-1/2 h-80 right-0">
-                    <div>
-                      <p className="text-gray-600 text-sm text-right mb-3 mt-1">
-                        <span className="mr-1">📍</span>
-                        {formatCityName(foodItems.city)}
-                      </p>
-                      <div className="text-gray-900 font-medium">
-                        Pre-Order {foodItems?.info && foodItems?.info[0] ? foodItems?.info[0]?.preOrder : "No"}
-                      </div>
+                  <div className="col-span-6 flex flex-col justify-between">
+                    <div className="text-gray-900 font-medium">
+                      Pre-Order: {foodItems?.info?.[0]?.preOrder || "No"}
                     </div>
-                    <div>
-                      <div className=" absolute bottom-0" style={{ width: "49%" }}>
-                        <h1 className="text-1xl font-PoppinsBold mb-5">Explore the area</h1>
-                        {isLoaded && coords?.lat && coords?.lng ? (
-                          <div className="h-full w-full rounded-lg overflow-hidden">
-                            <GoogleMap
-                              mapContainerStyle={{
-                                height: "15rem",
-                                width: "120%",
-                              }}
-                              zoom={10}
-                              center={coords}
-                              options={{
-                                disableDefaultUI: true,
-                                zoomControl: false,
-                                mapTypeControl: false,
-                                scaleControl: false,
-                                streetViewControl: false,
-                                rotateControl: false,
-                                fullscreenControl: false,
-                              }}
-                            >
-                              <Marker position={coords} />
-                            </GoogleMap>
-                          </div>
-                        ) : (
-                          <p>Loading map...</p>
-                        )}
-                      </div>
+
+                    <div className="w-full">
+                      <h1 className="text-xl font-bold mb-2">Explore the Restaurant</h1>
+                      {isLoaded && coords?.lat && coords?.lng ? (
+                        <div className="h-full w-full rounded-lg overflow-hidden">
+                          <a
+                            href="#"
+                            className="text-customOrange text-sm font-medium flex items-center space-x-2 transition-all hover:text-customOrange hover:no-underline"
+                            onClick={() => handleFoodByRestaurantName(foodItems.restaurant)}
+                          >
+                            <span>{formatCityName(foodItems.restaurant)}</span>
+                          </a>
+                        </div>
+                      ) : (
+                        <p>Loading Restaurant...</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
 
+
+
+
               </div>
             </Link>
+          )}
 
-          }
-
-
+          {/* View Full Map Button */}
           <button
-            className="flex justify-center w-100 ml-auto border border-green-500 text-green-700 rounded-lg p-2 px-5 text-sm"
+            className="flex justify-center w-100 ml-auto border border-green-500 text-green-700 rounded-lg p-2 px-5 text-sm mt-6"
             onClick={() => setOpen(true)}
           >
             View Full Map
           </button>
 
-          <h2 className="text-2xl font-bold mb-4">
-            Explore Your Menu
-          </h2>
+          {/* Explore Menu Section */}
+          <h2 className="text-2xl font-bold mb-4 mt-8">Explore Your Menu</h2>
           <div className="grid grid-cols-3 gap-4">
-            {loadingCategories ? <Loading /> : foodCategories.slice(0, 6).map((food, index) => (
-              <ProductCardGrid key={index} food={food} />
-            ))}
+            {loadingCategories ? (
+              <Loading />
+            ) : (
+              foodCategories.slice(0, 6).map((food, index) => <ProductCardGrid key={index} food={food} />)
+            )}
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );

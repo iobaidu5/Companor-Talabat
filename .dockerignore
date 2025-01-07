@@ -1,7 +1,8 @@
-node_modules
-.next
 Dockerfile
 .dockerignore
-.env.local
-.vscode
+node_modules
+npm-debug.log
+README.md
+.next
 .git
+.vscode

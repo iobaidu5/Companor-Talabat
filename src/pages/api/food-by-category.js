@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 export default async function handler(req, res) {
   try {
     const client = await clientPromise;
-    const db = client.db('scrapped');
+    const db = client.db('companor');
 
     const { category, page = 1, limit = 10 } = req.query;
 
@@ -17,11 +17,26 @@ export default async function handler(req, res) {
 
     const skip = (pageNumber - 1) * limitNumber;
 
-    const foodItems = await db
-      .collection('fooditems')
-      .find({ category })
-      .skip(skip)
-      .limit(limitNumber)
+    // const foodItems = await db
+    //   .collection('fooditems')
+    //   .find({ category })
+    //   .skip(skip)
+    //   .limit(limitNumber)
+    //   .toArray();
+
+    const foodItems = await db.collection('fooditems')
+      .aggregate([
+        { $match: { category } },
+        {
+          $group: {
+            _id: "$itemName",
+            doc: { $first: "$$ROOT" }
+          }
+        },
+        { $replaceRoot: { newRoot: "$doc" } },
+        { $skip: skip },
+        { $limit: limitNumber }
+      ])
       .toArray();
 
     const totalItems = await db.collection('fooditems').countDocuments({ category });
@@ -45,7 +60,7 @@ export default async function handler(req, res) {
       })
     );
 
-    res.status(200).json({ foodItems: updatedFoodItems, page: pageNumber, totalPages, totalItems });
+    res.status(200).json({ foodItems: updatedFoodItems, currentPage: pageNumber, totalPages, totalItems });
   } catch (error) {
     console.error('Error fetching food items by category:', error);
     res.status(500).json({ error: 'Failed to fetch food items' });

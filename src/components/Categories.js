@@ -104,10 +104,10 @@ const Categories = () => {
           {categories.map((category, index) => (
             <div
               key={index}
-              className="p-2"
+              className="p-2 h-100"
               onClick={() => handleCategoryClick(category)}
             >
-              <div className="rounded-lg shadow-md bg-white hover:shadow-lg transform hover:scale-105 transition duration-300 cursor-pointer">
+              <div className="rounded-lg h-100 shadow-md bg-white hover:shadow-lg transform hover:scale-105 transition duration-300 cursor-pointer">
                 <img
                   src={images[index]?.image}
                   alt={category}
