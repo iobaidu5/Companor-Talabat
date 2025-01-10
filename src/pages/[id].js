@@ -11,6 +11,11 @@ import ProductCardGrid from "@/components/ProductCardGrid";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist, removeFromWishlist } from "../reducers/wishlistSlice";
+import { addToCart, removeFromCart } from "../reducers/cartSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProductDetails() {
 
@@ -31,6 +36,69 @@ export default function ProductDetails() {
     googleMapsApiKey: GOOGLE_MAP_API,
     // libraries: ['geometry', 'drawing'],
   });
+
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist);
+  const cart = useSelector((state) => state.cart);
+
+  const isInWishlist = wishlist.some((item) => item._id === foodItems._id);
+  const isInCart = cart.some((item) => item._id === foodItems._id);
+
+  const handleWishlistClick = () => {
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(foodItems));
+    } else {
+      dispatch(addToWishlist(foodItems));
+    }
+  };
+
+  const handleCartClick = () => {
+    if (isInCart) {
+      dispatch(removeFromCart(foodItems));
+    } else {
+      dispatch(addToCart(foodItems));
+    }
+  };
+  const styles = {
+    tile: {
+      border: "1px solid #ccc",
+      padding: "20px",
+      margin: "10px",
+      borderRadius: "8px",
+      textAlign: "center",
+      position: "relative",
+      overflow: "hidden",
+    },
+    icons: {
+      position: "absolute",
+      top: "10px",
+      right: "10px",
+      display: "flex",
+      gap: "10px",
+    },
+    iconButton: {
+      border: "1px solid #ccc",
+      borderRadius: "50%",
+      background: "transparent",
+      fontSize: "20px",
+      color: "#eee",
+      cursor: "pointer",
+      padding: "8px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      transition: "border-color 0.3s, color 0.3s",
+    },
+    activeWishlistButton: {
+      border: "1px solid red",
+      color: "red",
+    },
+    activeCartButton: {
+      border: "1px solid #FF5A00",
+      color: "#FF5A00",
+    },
+  };
+
 
 
   function getAddressFromLatLong(lat, lng) {
@@ -284,10 +352,43 @@ export default function ProductDetails() {
                 {/* Right Section: Data */}
                 <div className="md:w-md grid grid-cols-12 gap-6 p-2 rounded-lg cursor-pointer">
                   <div className="col-span-12 justify-between">
+
+                    <div style={styles.icons}>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleWishlistClick();
+                        }}
+                        style={{
+                          ...styles.iconButton,
+                          ...(isInWishlist ? styles.activeWishlistButton : {}),
+                        }}
+                        title={isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+                      >
+                        <FontAwesomeIcon icon={faHeart} />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleCartClick();
+                        }}
+                        style={{
+                          ...styles.iconButton,
+                          ...(isInCart ? styles.activeCartButton : {}),
+                        }}
+                        title={isInCart ? "Remove from Cart" : "Add to Cart"}
+                      >
+                        <FontAwesomeIcon icon={faCartShopping} />
+                      </button>
+                    </div>
+
                     <div className="flex flex-col justify-between gap-1 absolute top-3 right-3">
                       <div className="flex flex-col">
                         {/* City */}
-                        <p className="text-gray-600 text-sm text-right mb-3">
+                        <p className="text-gray-600 text-sm text-right mb-3 mt-12">
                           <span className="mr-1">📍</span>{formatCityName(foodItems.city)}
                         </p>
                       </div>

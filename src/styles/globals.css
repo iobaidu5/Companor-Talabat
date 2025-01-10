@@ -92,3 +92,26 @@ body {
     padding: 0 5rem;
   }
 }
+
+
+.image-container {
+  /* position: relative;
+  display: inline-block; */
+}
+
+.image-thumbnail {
+
+}
+
+.image-full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  max-width: 30vw;
+  max-height: 30vh;
+  z-index: 10;
+  transform: scale(1.5);
+  transition: transform 0.3s ease;
+}
