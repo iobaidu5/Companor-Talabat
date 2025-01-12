@@ -4,20 +4,31 @@ services:
   web:
     depends_on:
       - mongo
-    environment:
-      - MONGODB_URI=${MONGODB_URI}
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/companor
+      - APP_NAME=companor
+    env_file:
+      - .env
+    networks:
+      - companor_network
 
   mongo:
     image: iobaidu5/mongodb-companor
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
-      - companor:/data/db
+      - companor_db:/data/db
+    networks:
+      - companor_network
 
 volumes:
-  companor:
+  companor_db:
+
+networks:
+  companor_network:
+    driver: bridge
